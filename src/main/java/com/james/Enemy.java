@@ -1,4 +1,4 @@
-package com.company;
+package com.james;
 
 public class Enemy {
 }

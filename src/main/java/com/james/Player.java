@@ -1,4 +1,4 @@
-package com.company;
+package com.james;
 
 
 import java.util.Random;
@@ -16,6 +16,7 @@ public class Player {
     int maxDamage;
     Random rnd = new Random();
 
+
     public Player(String name, int lvl, int exp, int hp, int maxHp, int mana, int baseDamage, int maxDamage) {
         this.name = name;
         this.lvl = lvl;
@@ -32,16 +33,16 @@ public class Player {
     public String createPlayer() {
         name = stringInput("What is your name?");
         return name;
-    }
+//    }
+//
+//    public int attack() {
+//        return rnd.nextInt(maxDamage - baseDamage) + baseDamage;
+//    }
+//
+//    public int brace() {
+//
+//    }
 
-    public int attack() {
-        return rnd.nextInt(maxDamage - baseDamage) + baseDamage;
-    }
-
-    public int brace() {
-
-    }
 
 
-
-}
+}}
