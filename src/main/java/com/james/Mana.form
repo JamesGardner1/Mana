@@ -75,6 +75,7 @@
         </constraints>
         <properties>
           <font name="Broadway" size="26" style="1"/>
+          <foreground color="-1"/>
           <text value="Adventure Log"/>
         </properties>
       </component>
