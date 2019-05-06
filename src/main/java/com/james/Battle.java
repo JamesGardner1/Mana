@@ -6,7 +6,6 @@ public class Battle {
     Mana mana;
 
 
-    String battleText = String.format("% has appeared", enemy);
     String battleChoice1 = "Attack";
     String battleChoice2 = "Use Item";
     String battleChoice3 = "Run";

@@ -53,7 +53,7 @@ public class Enemy {
     }
 
     public int brace() {
-        return hp - player.attack();
+        return this.hp - player.attack();
 
     }
 

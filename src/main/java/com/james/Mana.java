@@ -91,24 +91,34 @@ public class Mana extends JFrame {
         phase = 6;
         adventureText.setText("Mysterious Voice: Basic, yet effective...");
         choice1.setText(">>>");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+
     }
 
     public void selectBow() {
         phase = 7;
         adventureText.setText("Mysterious Voice: I hope you know how to use that!\n <Mysterious Voice Laughs>");
         choice1.setText(">>>");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
     }
 
     public void selectOrb() {
         phase = 8;
         adventureText.setText("Mysterious Voice: Ha! Do you even know what that is?!");
         choice1.setText(">>>");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
 
     }
 
     public void firstBattle() {
         phase = 9;
-        adventureText.setText("Looks like you are going to have to use it!\n" + battle.battleText);
+        adventureText.setText("Looks like you are going to have to use it!\n");
         choice1.setText(battle.battleChoice1);
         choice2.setText(battle.battleChoice2);
         choice3.setText(battle.battleChoice3);
@@ -117,10 +127,11 @@ public class Mana extends JFrame {
     }
 
 
-    public class ChoiceHandler implements ActionListener{
+    public class ChoiceHandler implements ActionListener {
         public void actionPerformed(ActionEvent event){
 
             String yourChoice = event.getActionCommand();
+
 
             switch(phase){
                 case 1:
@@ -168,7 +179,9 @@ public class Mana extends JFrame {
                     break;
                 case 9:
                     switch (yourChoice){
-                        case "c1":bandit.brace();
+                        case "c1":break;
+                        case "c2":break;
+
                     }
                     break;
                 case 10:
