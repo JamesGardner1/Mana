@@ -16,6 +16,7 @@ public class Mana extends JFrame {
     int phase;
     ChoiceHandler choiceHandler = new ChoiceHandler();
     Battle battle;
+    Enemy bandit = new Enemy("Bandit",25,5,10);
 
     Player player = new Player(this.getName(),1,0,50, 50, 25, 5,10);
 
@@ -43,7 +44,7 @@ public class Mana extends JFrame {
     public void awaken() {
         phase = 1;
         adventureText.setText("<You awake from your slumber. You try to recall why you are on this stone platform with etched in symbols" +
-                ", but you cant remember anything. You then here a mysterious elderly voice.> Mysterious Voice: You have finally awaken");
+                ", but you cant remember anything. You then here a mysterious elderly voice.>\nMysterious Voice: You have finally awaken");
         choice1.setText("Who are you?");
         choice2.setText("");
         choice3.setText("");
@@ -61,7 +62,7 @@ public class Mana extends JFrame {
 
     public void chest() {
         phase = 3;
-        adventureText.setText("Please open the chest. <A chest appears in front of you>");
+        adventureText.setText("Please open the chest.\n <A chest appears in front of you>");
         choice1.setText("Open the chest");
         choice2.setText("(Refuse)'Not until you tell me my I'm here and who you are!'");
         choice3.setText("");
@@ -70,7 +71,7 @@ public class Mana extends JFrame {
 
     public void selectWeapon() {
         phase = 4;
-        adventureText.setText("<In the chest you see 3 items: A sword, a bow, and a orb> Mysterious Voice: We..Or I should say you don't have all day. Choooosseeee Yoooouuuuurrr Weeeeaaappppooonn!");
+        adventureText.setText("<In the chest you see 3 items: A sword, a bow, and a orb>\n Mysterious Voice: We..Or I should say you don't have all day. Choooosseeee Yoooouuuuurrr Weeeeaaappppooonn!");
         choice1.setText("Pick up the sword");
         choice2.setText("Pick up the bow.");
         choice3.setText("Pick up the orb.");
@@ -94,7 +95,7 @@ public class Mana extends JFrame {
 
     public void selectBow() {
         phase = 7;
-        adventureText.setText("Mysterious Voice: I hope you know how to use that! <Mysterious Voice Laughs>");
+        adventureText.setText("Mysterious Voice: I hope you know how to use that!\n <Mysterious Voice Laughs>");
         choice1.setText(">>>");
     }
 
@@ -107,7 +108,11 @@ public class Mana extends JFrame {
 
     public void firstBattle() {
         phase = 9;
-        adventureText.setText("Looks like you are going to have to use it!");
+        adventureText.setText("Looks like you are going to have to use it!\n" + battle.battleText);
+        choice1.setText(battle.battleChoice1);
+        choice2.setText(battle.battleChoice2);
+        choice3.setText(battle.battleChoice3);
+        choice4.setText(battle.battleChoice4);
 
     }
 
@@ -155,10 +160,22 @@ public class Mana extends JFrame {
                     switch (yourChoice) {
                         case "c1":firstBattle();break;
                     }
+                    break;
                 case 8:
                     switch (yourChoice){
                         case "c1":firstBattle();break;
                     }
+                    break;
+                case 9:
+                    switch (yourChoice){
+                        case "c1":bandit.brace();
+                    }
+                    break;
+                case 10:
+                    switch (yourChoice){
+                        case "c1":firstBattle();
+                    }
+
             }
 
         }

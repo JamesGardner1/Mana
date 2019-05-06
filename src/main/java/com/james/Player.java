@@ -15,6 +15,7 @@ public class Player {
     int baseDamage;
     int maxDamage;
     Random rnd = new Random();
+    Enemy enemy;
 
 
     public Player(String name, int lvl, int exp, int hp, int maxHp, int mana, int baseDamage, int maxDamage) {
@@ -30,19 +31,20 @@ public class Player {
 
 
 
-    public String createPlayer() {
-        name = stringInput("What is your name?");
-        return name;
+//    public String createPlayer() {
+//        name = stringInput("What is your name?");
+//        return name;
 //    }
 //
-//    public int attack() {
-//        return rnd.nextInt(maxDamage - baseDamage) + baseDamage;
-//    }
-//
-//    public int brace() {
-//
-//    }
+    public int attack() {
+        return rnd.nextInt(maxDamage - baseDamage) + baseDamage;
+    }
+
+    public int brace() {
+        return hp - enemy.attack();
+
+    }
 
 
 
-}}
+}

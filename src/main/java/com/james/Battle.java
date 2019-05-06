@@ -5,9 +5,17 @@ public class Battle {
     Enemy enemy;
     Mana mana;
 
-    public void battleInterface() {
-        String.format("% has appeared", enemy);
 
-    }
+    String battleText = String.format("% has appeared", enemy);
+    String battleChoice1 = "Attack";
+    String battleChoice2 = "Use Item";
+    String battleChoice3 = "Run";
+    String battleChoice4 = "";
+
+    String attackText = String.format(enemy.getName() +" receives " + player.attack() + " damage.");
+
+
+
+
 }
 
