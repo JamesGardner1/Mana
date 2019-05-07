@@ -19,6 +19,8 @@ public class VisiblityManager {
 
     }
     public void startGame(){
+        titleScreen.setVisible(false);
+        mana.setVisible(true);
 
     }
 }

@@ -9,6 +9,10 @@ public class Game {
     Mana mana = new Mana(choiceHandler);
     TitleScreen titleScreen = new TitleScreen(choiceHandler);
     VisiblityManager visiblityManager = new VisiblityManager(mana, titleScreen);
+    Sequence sequence = new Sequence(this, mana, titleScreen, visiblityManager);
+
+    String nextChoice1, nextChoice2, nextChoice3, nextChoice4;
+
     public static void main(String[] args) {
 
       new Game();
@@ -20,6 +24,7 @@ public class Game {
     public Game(){
 
         visiblityManager.showTitleScreen();
+        sequence.defaultStats();
 
 
     }
@@ -32,11 +37,11 @@ public class Game {
             String yourChoice = e.getActionCommand();
 
             switch(yourChoice){
-                case "start": break;
-                case "c1": break;
-                case "c2": break;
-                case "c3": break;
-                case "c4": break;
+                case "start": visiblityManager.startGame();sequence.awaken(); break;
+                case "c1": sequence.selectChoice(nextChoice1); break;
+                case "c2": sequence.selectChoice(nextChoice2);break;
+                case "c3": sequence.selectChoice(nextChoice3);break;
+                case "c4": sequence.selectChoice(nextChoice4);break;
             }
 
         }

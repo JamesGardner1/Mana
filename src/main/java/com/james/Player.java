@@ -18,16 +18,16 @@ public class Player {
     Enemy enemy;
 
 
-    public Player(String name, int lvl, int exp, int hp, int maxHp, int mana, int baseDamage, int maxDamage) {
-        this.name = name;
-        this.lvl = lvl;
-        this.exp = exp;
-        this.hp = hp;
-        this.maxHp = maxHp;
-        this.mana = mana;
-        this.baseDamage = baseDamage;
-        this.maxDamage = maxDamage;
-    }
+//    public Player(String name, int lvl, int exp, int hp, int maxHp, int mana, int baseDamage, int maxDamage) {
+//        this.name = name;
+//        this.lvl = lvl;
+//        this.exp = exp;
+//        this.hp = hp;
+//        this.maxHp = maxHp;
+//        this.mana = mana;
+//        this.baseDamage = baseDamage;
+//        this.maxDamage = maxDamage;
+//    }
 
 
 
