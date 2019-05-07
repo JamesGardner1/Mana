@@ -8,7 +8,8 @@ public class Sequence {
     Player player = new Player();
 
     //Choice Battle Interface
-    String battleChoice1 =
+    String battleChoice1 = "Attack";
+    String
 
 
     public Sequence(Game gameStory, Mana manaStory, TitleScreen titleStory, VisiblityManager visibiltyStory){
