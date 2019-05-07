@@ -14,13 +14,20 @@ public class Mana extends JFrame {
     private JTextPane adventureText;
 
     int phase;
-    ChoiceHandler choiceHandler = new ChoiceHandler();
     Battle battle;
     Enemy bandit = new Enemy("Bandit",25,5,10);
 
     Player player = new Player(this.getName(),1,0,50, 50, 25, 5,10);
 
-    Mana() {
+    //Battle Interface
+    String battleChoice1 = "Attack";
+    String battleChoice2 = "Use Item";
+    String battleChoice3 = "Run";
+    String battleChoice4 = "";
+
+    String attackText = String.format(bandit.getName() +" receives " + player.attack() + " damage.");
+
+    public Mana(Game.ChoiceHandler choiceHandler) {
         setContentPane(mainPanel);
         pack();
         setVisible(true);
@@ -119,80 +126,80 @@ public class Mana extends JFrame {
     public void firstBattle() {
         phase = 9;
         adventureText.setText("Looks like you are going to have to use it!\n");
-        choice1.setText(battle.battleChoice1);
-        choice2.setText(battle.battleChoice2);
-        choice3.setText(battle.battleChoice3);
-        choice4.setText(battle.battleChoice4);
+        choice1.setText(battleChoice1);
+        choice2.setText(battleChoice2);
+        choice3.setText(battleChoice3);
+        choice4.setText(battleChoice4);
 
     }
 
 
-    public class ChoiceHandler implements ActionListener {
-        public void actionPerformed(ActionEvent event){
-
-            String yourChoice = event.getActionCommand();
-
-
-            switch(phase){
-                case 1:
-                    switch(yourChoice){
-                        case "c1": whoAreYou(); break;
-                    }
-                    break;
-                case 2:
-                    switch(yourChoice) {
-                        case "c1": chest(); break;
-                    }
-                    break;
-                case 3:
-                    switch (yourChoice) {
-                        case "c1": selectWeapon();break;
-                        case "c2": standStill();break;
-                    }
-                    break;
-                case 4:
-                    switch (yourChoice) {
-                        case "c1": selectSword();break;
-                        case "c2": selectBow();break;
-                        case "c3": selectOrb();break;
-                    }
-                    break;
-                case 5:
-                    switch (yourChoice) {
-                        case "c1":chest();break;
-                    }
-                    break;
-                case 6:
-                    switch (yourChoice) {
-                        case "c1":firstBattle();break;
-                    }
-                    break;
-                case 7:
-                    switch (yourChoice) {
-                        case "c1":firstBattle();break;
-                    }
-                    break;
-                case 8:
-                    switch (yourChoice){
-                        case "c1":firstBattle();break;
-                    }
-                    break;
-                case 9:
-                    switch (yourChoice){
-                        case "c1":break;
-                        case "c2":break;
-
-                    }
-                    break;
-                case 10:
-                    switch (yourChoice){
-                        case "c1":firstBattle();
-                    }
-
-            }
-
-        }
-    }
+//    public class ChoiceHandler implements ActionListener {
+//        public void actionPerformed(ActionEvent event){
+//
+//            String yourChoice = event.getActionCommand();
+//
+//
+//            switch(phase){
+//                case 1:
+//                    switch(yourChoice){
+//                        case "c1": whoAreYou(); break;
+//                    }
+//                    break;
+//                case 2:
+//                    switch(yourChoice) {
+//                        case "c1": chest(); break;
+//                    }
+//                    break;
+//                case 3:
+//                    switch (yourChoice) {
+//                        case "c1": selectWeapon();break;
+//                        case "c2": standStill();break;
+//                    }
+//                    break;
+//                case 4:
+//                    switch (yourChoice) {
+//                        case "c1": selectSword();break;
+//                        case "c2": selectBow();break;
+//                        case "c3": selectOrb();break;
+//                    }
+//                    break;
+//                case 5:
+//                    switch (yourChoice) {
+//                        case "c1":chest();break;
+//                    }
+//                    break;
+//                case 6:
+//                    switch (yourChoice) {
+//                        case "c1":firstBattle();break;
+//                    }
+//                    break;
+//                case 7:
+//                    switch (yourChoice) {
+//                        case "c1":firstBattle();break;
+//                    }
+//                    break;
+//                case 8:
+//                    switch (yourChoice){
+//                        case "c1":firstBattle();break;
+//                    }
+//                    break;
+//                case 9:
+//                    switch (yourChoice){
+//                        case "c1":break;
+//                        case "c2":break;
+//
+//                    }
+//                    break;
+//                case 10:
+//                    switch (yourChoice){
+//                        case "c1":firstBattle();
+//                    }
+//
+//            }
+//
+//        }
+//    }
 
 
 

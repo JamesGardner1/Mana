@@ -9,21 +9,15 @@ public class TitleScreen extends JFrame {
     private JPanel titlePanel;
     private JLabel headerLabel;
 
-    TitleScreen() {
+    public TitleScreen(Game.ChoiceHandler choiceHandler) {
         setContentPane(titlePanel);
         pack();
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-
-
-            }
-        });
+        startButton.addActionListener(choiceHandler);
+        startButton.setActionCommand("start");
     }
 
 }
