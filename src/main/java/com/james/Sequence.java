@@ -9,7 +9,10 @@ public class Sequence {
 
     //Choice Battle Interface
     String battleChoice1 = "Attack";
-    String
+    String battleChoice2 = "Magic";
+    String battleChoice3 = "Use Item";
+    String battleChoice4 = "Run";
+
 
 
     public Sequence(Game gameStory, Mana manaStory, TitleScreen titleStory, VisiblityManager visibiltyStory){
@@ -38,7 +41,7 @@ public class Sequence {
             case "Sword": selectSword(); break;
             case "Bow" : selectBow(); break;
             case "Orb" : selectOrb(); break;
-            case "First Battle" : firstBattle(); break;
+            case "First Battle!" : firstBattle(); break;
 
         }
 
@@ -95,7 +98,7 @@ public class Sequence {
         mana.choice3.setText("");
         mana.choice4.setText("");
 
-        game.nextChoice1 = "Open Chest";
+        game.nextChoice1 = "Chest Appears";
     }
 
     public void selectSword() {
