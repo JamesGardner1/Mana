@@ -18,6 +18,8 @@
         </constraints>
         <properties>
           <background color="-16432870"/>
+          <font size="20" style="1"/>
+          <foreground color="-1"/>
           <text value="START"/>
         </properties>
       </component>
@@ -28,6 +30,7 @@
         <properties>
           <background color="-16367340"/>
           <font name="Castellar" size="90" style="0"/>
+          <foreground color="-131587"/>
           <horizontalAlignment value="0"/>
           <horizontalTextPosition value="0"/>
           <text value="Mana"/>

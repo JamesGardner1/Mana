@@ -10,10 +10,6 @@ public class Enemy {
     Random rnd = new Random();
     Player player;
 
-    public String getName() {
-        return name;
-    }
-
 
     public int getHp() {
         return hp;
@@ -48,13 +44,6 @@ public class Enemy {
 
 
 
-    public int attack() {
-        return rnd.nextInt(maxDamage - baseDamage) + baseDamage;
-    }
 
-    public int brace() {
-        return this.hp - player.attack();
-
-    }
 
 }

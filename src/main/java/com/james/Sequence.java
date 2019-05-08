@@ -1,17 +1,23 @@
 package com.james;
 
+import java.util.Random;
+
 public class Sequence {
     Game game;
     Mana mana;
     TitleScreen titleScreen;
     VisiblityManager visiblityManager;
     Player player = new Player();
+    Enemy bandit = new Enemy("Bandit", 25,5,10);
+    Random rnd = new Random();
 
     //Choice Battle Interface
     String battleChoice1 = "Attack";
     String battleChoice2 = "Magic";
     String battleChoice3 = "Use Item";
     String battleChoice4 = "Run";
+
+
 
 
 
@@ -32,6 +38,16 @@ public class Sequence {
         player.maxDamage = 10;
     }
 
+    public void setUIDefault(){
+        mana.levelLabel.setText("" + player.lvl);
+        mana.playerHpLabel.setText("" + player.hp);
+        mana.manaLabel.setText(String.valueOf(player.mana));
+        mana.expLabel.setText(String.valueOf(player.exp));
+
+    }
+
+
+
     public void selectChoice(String nextChoice){
         switch (nextChoice){
             case "Who are you?": whoAreYou(); break;
@@ -42,6 +58,9 @@ public class Sequence {
             case "Bow" : selectBow(); break;
             case "Orb" : selectOrb(); break;
             case "First Battle!" : firstBattle(); break;
+            case "Attack Bandit" : attackBandit(); break;
+            case "Bandit Attack" : banditAttack(); break;
+            case "Bandit Victory": banditVictory(); break;
 
         }
 
@@ -135,11 +154,77 @@ public class Sequence {
     }
 
     public void firstBattle() {
-        mana.adventureText.setText("Looks like you are going to have to use it!\n A human bandit charges you!");
+
+
+        mana.adventureText.setText("Looks like you are going to have to use it!\n A" + bandit.name + " charges you!");
         mana.choice1.setText(battleChoice1);
         mana.choice2.setText(battleChoice2);
         mana.choice3.setText(battleChoice3);
         mana.choice4.setText(battleChoice4);
+
+        game.nextChoice1 = "Attack Bandit";
+        game.nextChoice2 = "Use Item";
+
+    }
+
+    public void attackBandit() {
+        int playerDamage = rnd.nextInt(player.maxDamage - player.baseDamage + 1) + player.baseDamage;
+
+        mana.adventureText.setText("You attacked the " + bandit.name + " and dealt " + playerDamage + " damage!");
+        bandit.hp = bandit.hp - playerDamage;
+
+        mana.choice1.setText(">>>");
+        mana.choice2.setText("");
+        mana.choice3.setText("");
+        mana.choice4.setText("");
+
+        if (bandit.hp > 0){
+            game.nextChoice1 = "Bandit Attack";
+        } else {
+            game.nextChoice1 = "Bandit Victory";
+        }
+    }
+
+    public void banditAttack() {
+
+        int banditDamage = rnd.nextInt(bandit.maxDamage - bandit.baseDamage + 1) + bandit.baseDamage;
+
+        player.hp = player.hp - banditDamage;
+        mana.playerHpLabel.setText("" + player.hp);
+
+        mana.choice1.setText(">>>");
+        mana.choice2.setText("");
+        mana.choice3.setText("");
+        mana.choice4.setText("");
+
+        if(player.hp > 0){
+            game.nextChoice1 = "First Battle!";
+        } else {
+            game.nextChoice1 = "Defeat";
+        }
+    }
+
+    public void banditVictory(){
+
+        mana.adventureText.setText("Mysterious Voice: Hmmm, the GrandMaster may have picked the right one after all...\n You recieve a FireSpell and Potion!");
+    }
+
+    public void defeat(){
+        mana.adventureText.setText("Dang, you died fam.\n\n\nGAME OVER!");
+
+        mana.choice1.setText("Try Again?");
+        mana.choice2.setText("");
+        mana.choice3.setText("");
+        mana.choice4.setText("");
+
+        game.nextChoice1 = "Restart";
+
+    }
+
+    public void restart() {
+
+        defaultStats();
+        visiblityManager.showTitleScreen();
 
     }
 
