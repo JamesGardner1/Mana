@@ -8,8 +8,9 @@ public class Sequence {
     TitleScreen titleScreen;
     VisiblityManager visiblityManager;
     Player player = new Player();
-    Enemy bandit = new Enemy("Bandit", 25,5,10);
+    Enemy bandit = new Enemy("Bandit", 25,5,10, 25);
     Random rnd = new Random();
+    ItemsDB items = new ItemsDB();
 
     //Choice Battle Interface
     String battleChoice1 = "Attack";
@@ -125,6 +126,7 @@ public class Sequence {
     }
 
     public void selectSword() {
+
         mana.adventureText.setText("Mysterious Voice: Basic, yet effective...");
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
