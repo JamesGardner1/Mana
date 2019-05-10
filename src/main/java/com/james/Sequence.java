@@ -10,7 +10,7 @@ public class Sequence {
     Player player = new Player();
     Enemy bandit = new Enemy("Bandit", 25,5,10, 25);
     Random rnd = new Random();
-    ItemsDB items = new ItemsDB();
+//    ItemsDB items = new ItemsDB();
 
     //Choice Battle Interface
     String battleChoice1 = "Attack";

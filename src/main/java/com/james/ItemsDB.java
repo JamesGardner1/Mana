@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ItemsDB {
-    private static final String DB_CONNECTION_URL = "jdbc:sqlite/items.sqlite";
+    private static final String DB_CONNECTION_URL = "jdbc:sqlite:items.sqlite";
 
     // SQL statements
     private static final String CREATE_ITEM_TABLE = "CREATE TABLE items (name TEXT, effect INTEGER )";
@@ -32,12 +32,13 @@ public class ItemsDB {
 
         } catch (SQLException e) {
 
-            if (e.getMessage().contains("(Items Table already exist)")) {
+            if (e.getMessage().contains("(table items already exists)")) {
                 //ignore, table already exists.
             } else {
                 throw new RuntimeException(e);
             }
         }
+
     }
 
 }
