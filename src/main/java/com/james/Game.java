@@ -27,6 +27,8 @@ public class Game {
 
         visiblityManager.showTitleScreen();
         sequence.defaultStats();
+        sequence.setUIDefault();
+        items.createInventory();
         items.createTable();
 
 

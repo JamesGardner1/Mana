@@ -23,7 +23,7 @@ public class Mana extends JFrame {
     public Mana(Game.ChoiceHandler choiceHandler) {
         setContentPane(mainPanel);
         pack();
-        setVisible(true);
+        setVisible(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 

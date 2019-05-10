@@ -10,6 +10,7 @@ public class ItemsDB {
 
     // SQL statements
     private static final String CREATE_ITEM_TABLE = "CREATE TABLE items (name TEXT, effect INTEGER )";
+    private static final String CREATE_INVENTORY_TABLE = "CREATE TABLE inventory (name TEXT, effect INTEGER)";
     private static final String GET_ALL_ITEMS = "SELECT * FROM items";
 
 
@@ -29,6 +30,24 @@ public class ItemsDB {
             statement.executeUpdate("INSERT INTO items (name, effect) VALUES ('Orb', 5)");
             statement.executeUpdate("INSERT INTO items (name, effect) VALUES ('Potion', 20)");
 
+
+        } catch (SQLException e) {
+
+            if (e.getMessage().contains("(table items already exists)")) {
+                //ignore, table already exists.
+            } else {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+    public void createInventory() {
+
+        try (Connection connection = DriverManager.getConnection(DB_CONNECTION_URL);
+             Statement statement = connection.createStatement()) {
+
+            statement.executeUpdate(CREATE_INVENTORY_TABLE);
 
         } catch (SQLException e) {
 
