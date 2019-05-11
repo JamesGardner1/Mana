@@ -175,6 +175,7 @@ public class Sequence {
 
     }
 
+
     public void attackBandit() {
         int playerDamage = rnd.nextInt(player.maxDamage - player.baseDamage + 1) + player.baseDamage;
 

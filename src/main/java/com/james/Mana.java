@@ -16,11 +16,19 @@ public class Mana extends JFrame {
     JLabel levelLabel;
     JLabel expLabel;
     JLabel manaLabel;
+    JList<Item> inventoryList;
 
+    ItemsDB items;
 
+    DefaultListModel<Item> allItemsListModel;
 
 
     public Mana(Game.ChoiceHandler choiceHandler) {
+
+        allItemsListModel = new DefaultListModel<Item>();
+        inventoryList.setModel(allItemsListModel);
+
+
         setContentPane(mainPanel);
         pack();
         setVisible(false);
