@@ -9,7 +9,6 @@ public class Game {
     Player player = new Player();
     Mana mana = new Mana(choiceHandler);
     ItemsDB items = new ItemsDB();
-    Item inventory;
     TitleScreen titleScreen = new TitleScreen(choiceHandler);
     VisiblityManager visiblityManager = new VisiblityManager(mana, titleScreen);
     Sequence sequence = new Sequence(this, mana, titleScreen, visiblityManager);
@@ -27,6 +26,7 @@ public class Game {
     public Game(){
 
         visiblityManager.showTitleScreen();
+        mana.clearInventory();
         sequence.defaultStats();
         sequence.setUIDefault();
         items.createTable();

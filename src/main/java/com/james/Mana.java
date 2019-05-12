@@ -43,9 +43,9 @@ public class Mana extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         useItemButton.setVisible(false);
-
-
         useItemButton.addActionListener(choiceHandler);
+
+        choice4.setVisible(false);
 
         choice1.addActionListener(choiceHandler);
         choice2.addActionListener(choiceHandler);
@@ -66,6 +66,8 @@ public class Mana extends JFrame {
         allItemsListModel.addElement("Potion");
     }
 
+    public void addManaPotion(){allItemsListModel.addElement("Mana Potion");}
+
     public void addSword() {
         allItemsListModel.addElement("Sword");
     }
@@ -77,8 +79,13 @@ public class Mana extends JFrame {
     }
 
     public void addLongSword() {
-        allItemsListModel.addElement("Potion");
+        allItemsListModel.addElement("Long Sword");
     }
+
+    public void addEarthOrb(){allItemsListModel.addElement("Earth Orb");}
+
+    public void addHeavyBow(){allItemsListModel.addElement("Dark Sword");}
+
 
 
     public void addListeners() {
@@ -87,7 +94,7 @@ public class Mana extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 int selectedIndex = inventoryList.getSelectedIndex();
-                String toUse = inventoryList.getSelectedValue();
+
 
                 if (selectedIndex != -1) {
                     allItemsListModel.remove(selectedIndex);
@@ -95,34 +102,15 @@ public class Mana extends JFrame {
                     JOptionPane.showMessageDialog(Mana.this, "Please select an item to use.");
                 }
 
-                if (toUse == "Potion") {
-                    usePotion();
-                }
-
 
             }
         });
     }
-    public void usePotion() {
 
-
-        adventureText.setText("You have gained 25 health.");
-
-        choice1.setText(">>>");
-        choice2.setVisible(false);
-        choice3.setVisible(false);
-        choice4.setVisible(false);
-
-//        if (player.exp == 0) {
-//           game.nextChoice1 = "Bandit Attack";
-//        } else if (player.exp > 25) {
-//            game.nextChoice1 = "Wizard Attack";
-//        } else {
-//            game.nextChoice1 = "Boss Attack!";
-//        }
-
-        useItemButton.setVisible(false);
+    public void clearInventory() {
+        allItemsListModel.clear();
     }
+
 
 }
 

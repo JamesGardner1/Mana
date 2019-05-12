@@ -9,9 +9,20 @@ public class Sequence {
     VisiblityManager visiblityManager;
     Player player = new Player();
     Enemy bandit = new Enemy("Bandit", 25,5,10, 25);
-    Random rnd = new Random();
-    Item item;
+    Enemy druid = new Enemy("Druid", 40, 8, 15, 40);
+    Item potion = new Item("Potion", 25);
+    Item sword = new Item("Sword", 5);
+    Item bow = new Item("Bow", 5);
+    Item orb = new Item("Orb", 5);
+    Item longSword = new Item("Long Sword", 10);
+    Item darkSword = new Item("Dark Sword", 15);
 
+    Random rnd = new Random();
+
+
+    //Events & Spells
+    boolean travelerUnderRock = true;
+    boolean hasHealing = false;
 
 
 
@@ -20,7 +31,7 @@ public class Sequence {
     String battleChoice1 = "Attack";
     String battleChoice2 = "Magic";
     String battleChoice3 = "Use Item";
-    String battleChoice4 = "Run";
+
 
 
 
@@ -46,8 +57,8 @@ public class Sequence {
     public void setUIDefault(){
         mana.levelLabel.setText("" + player.lvl);
         mana.playerHpLabel.setText("" + player.hp);
-        mana.manaLabel.setText(String.valueOf(player.mana));
-        mana.expLabel.setText(String.valueOf(player.exp));
+        mana.manaLabel.setText("" + player.mana);
+        mana.expLabel.setText("" + player.exp);
 
     }
 
@@ -71,10 +82,30 @@ public class Sequence {
             case "Attack Bandit" : attackBandit(); break;
             case "Bandit Attack" : banditAttack(); break;
             case "Bandit Victory": banditVictory(); break;
-            //Story cases
+            //Story cases - Phase 2
             case "After Bandit Battle" : afterBanditBattle(); break;
             case "Just Murder": twoPaths(); break;
             case "Doubt It": doubtIt(); break;
+            //Story cases - Forest
+            case "Forest One": forestOne();break;
+            case "Help Traveler": helpTraveler(); break;
+            case "Forest Two": forestTwo();break;
+            case "Rob Traveler": robTraveler();break;
+            case "Druid Battle": druidBattle();break;
+            case "Attack Druid": attackDruid();break;
+            case "Druid Attack": druidAttack();break;
+            case "Druid Victory": druidVictory();break;
+            case "Forest Three": forestThree();break;
+            case "Potion Lion": potionLion();break;
+            case "Kill Lion": killLion();break;
+            case "Heal Lion": healLion();break;
+            //Story cases Phase 3
+            case "Dark Wizard": darkWizard();break;
+
+            //Dead
+            case "Defeat": defeat();
+            case "Restart": restart();
+
 
         }
 
@@ -85,21 +116,15 @@ public class Sequence {
     public void useItem() {
         mana.useItemButton.setVisible(true);
 
-
-
         mana.adventureText.setText("Please select an item to use");
         mana.choice1.setText("Go back");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
-        mana.choice4.setVisible(false);
-
-
-
-
 
         if (player.exp == 0) {
             game.nextChoice1 = "First Battle!";
-        } else {} //TO DO Add later
+        } else if (player.exp >= 25 && travelerUnderRock) {
+            game.nextChoice1 = "Druid Battle";} else {}
 
 
 
@@ -109,7 +134,7 @@ public class Sequence {
     public void itemEffect() {
 
         if (mana.inventoryList.getSelectedValue() == "Potion"){
-            player.hp = player.hp + 25;
+            player.hp = player.hp + potion.effect;
             if (player.hp > player.maxHp) {
                 player.hp = player.maxHp;
             }
@@ -120,14 +145,13 @@ public class Sequence {
             mana.choice1.setText(">>>");
             mana.choice2.setVisible(false);
             mana.choice3.setVisible(false);
-            mana.choice4.setVisible(false);
 
             mana.useItemButton.setVisible(false);
 
             if (player.exp == 0) {
                 game.nextChoice1 = "Bandit Attack";
-            } else if (player.exp > 25) {
-                game.nextChoice1 = "Wizard Attack";
+            } else if (player.exp >= 25 && travelerUnderRock) {
+                game.nextChoice1 = "Druid Attack";
             } else {
                 game.nextChoice1 = "Boss Attack!";
             }
@@ -138,14 +162,11 @@ public class Sequence {
 
     public void awaken() {
 
-        mana.addPotion();
-
         mana.adventureText.setText("<You awake from your slumber. You try to recall why you are on this stone platform with etched in symbols" +
                ", but you cant remember anything. You then here a mysterious elderly voice.>\nMysterious Voice: You have finally awaken");
         mana.choice1.setText("Who are you?");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
-        mana.choice4.setVisible(false);
 
         game.nextChoice1 = "Who are you?";
     }
@@ -155,8 +176,6 @@ public class Sequence {
         mana.choice1.setText("GrandMaster?");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
-        mana.choice4.setVisible(false);
-
 
         game.nextChoice1 = "Chest Appears";
     }
@@ -166,8 +185,6 @@ public class Sequence {
         mana.choice1.setText("Open the chest");
         mana.choice2.setVisible(true);
         mana.choice2.setText("(Refuse)'Not until you tell me my I'm here and who you are!'");
-        mana.choice3.setText("");
-        mana.choice4.setText("");
 
         game.nextChoice1 = "Open Chest";
         game.nextChoice2 = "Refuse";
@@ -180,7 +197,6 @@ public class Sequence {
         mana.choice2.setText("Pick up the bow.");
         mana.choice3.setVisible(true);
         mana.choice3.setText("Pick up the orb.");
-        mana.choice4.setText("");
 
         game.nextChoice1 = "Sword";
         game.nextChoice2 = "Bow";
@@ -192,7 +208,6 @@ public class Sequence {
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
-        mana.choice4.setVisible(false);
 
         game.nextChoice1 = "Chest Appears";
     }
@@ -200,11 +215,13 @@ public class Sequence {
     public void selectSword() {
         mana.addSword();
 
-        mana.adventureText.setText("Mysterious Voice: Basic, yet effective...");
+        player.baseDamage = player.baseDamage + sword.effect;
+        player.maxDamage = player.maxDamage + sword.effect;
+
+    mana.adventureText.setText("Mysterious Voice: Basic, yet effective...");
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
-        mana.choice4.setVisible(false);
 
         game.nextChoice1 = "First Battle!";
 
@@ -213,11 +230,13 @@ public class Sequence {
     public void selectBow() {
         mana.addBow();
 
+        player.baseDamage = player.baseDamage + bow.effect;
+        player.maxDamage = player.maxDamage + bow.effect;
+
         mana.adventureText.setText("Mysterious Voice: I hope you know how to use that!\n <Mysterious Voice Laughs>");
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
-        mana.choice4.setVisible(false);
 
         game.nextChoice1 = "First Battle!";
 
@@ -226,26 +245,29 @@ public class Sequence {
     public void selectOrb() {
         mana.addOrb();
 
+        player.baseDamage = player.baseDamage + orb.effect;
+        player.maxDamage = player.maxDamage + orb.effect;
+
         mana.adventureText.setText("Mysterious Voice: Ha! Do you even know what that is?!");
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
-        mana.choice4.setVisible(false);
+
 
         game.nextChoice1 = "First Battle!";
 
     }
 
     public void firstBattle() {
+        mana.useItemButton.setVisible(false);
         mana.choice2.setVisible(true);
         mana.choice3.setVisible(true);
-        mana.choice4.setVisible(true);
 
-        mana.adventureText.setText("Looks like you are going to have to use it!\n A " + bandit.name + " charges you!");
+        mana.adventureText.setText("Looks like you are going to have to use it!\n A bandit charges you!");
         mana.choice1.setText(battleChoice1);
         mana.choice2.setText(battleChoice2);
         mana.choice3.setText(battleChoice3);
-        mana.choice4.setText(battleChoice4);
+
 
         game.nextChoice1 = "Attack Bandit";
         game.nextChoice2 = "Magic";
@@ -255,6 +277,8 @@ public class Sequence {
 
 
     public void attackBandit() {
+        mana.useItemButton.setVisible(false);
+
         int playerDamage = rnd.nextInt(player.maxDamage - player.baseDamage + 1) + player.baseDamage;
 
         mana.adventureText.setText("You attacked the " + bandit.name + " and dealt " + playerDamage + " damage!");
@@ -263,7 +287,6 @@ public class Sequence {
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
-        mana.choice4.setVisible(false);
 
         if (bandit.hp > 0){
             game.nextChoice1 = "Bandit Attack";
@@ -273,6 +296,7 @@ public class Sequence {
     }
 
     public void banditAttack() {
+        mana.useItemButton.setVisible(false);
 
         int banditDamage = rnd.nextInt(bandit.maxDamage - bandit.baseDamage + 1) + bandit.baseDamage;
 
@@ -283,7 +307,6 @@ public class Sequence {
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
-        mana.choice4.setVisible(false);
 
         if(player.hp > 0){
             game.nextChoice1 = "First Battle!";
@@ -293,6 +316,7 @@ public class Sequence {
     }
 
     public void banditVictory(){
+        mana.useItemButton.setVisible(false);
         mana.addPotion();
 
         player.exp = player.exp + bandit.expWorth;
@@ -302,10 +326,8 @@ public class Sequence {
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
-        mana.choice4.setVisible(false);
 
         game.nextChoice1 = "After Bandit Battle";
-
     }
 
     public void afterBanditBattle() {
@@ -315,11 +337,9 @@ public class Sequence {
         mana.choice1.setText("What are you talking about?! That guy almost killed me!");
         mana.choice2.setText("Wait until I find you.....you are next");
         mana.choice3.setVisible(false);
-        mana.choice4.setVisible(false);
 
         game.nextChoice1 = "Just Murder";
         game.nextChoice2 = "Doubt It";
-
     }
 
     public void twoPaths() {
@@ -330,11 +350,24 @@ public class Sequence {
         mana.choice1.setText("Take Forest Path");
         mana.choice2.setText("Take Lake Path");
         mana.choice3.setVisible(false);
-        mana.choice4.setVisible(false);
 
         game.nextChoice1 = "Forest One";
         game.nextChoice2 = "Lake One";
+    }
 
+    public void forestOne() {
+        mana.choice2.setVisible(true);
+        mana.choice3.setVisible(true);
+
+        mana.adventureText.setText("<You walk towards the forest>\n<You hear screaming in the distance and head towards the sound, farther into the forest>" +
+                "\nYou stumble upon a traveler stuck under a huge boulder\nTraveler:Please help me!");
+        mana.choice1.setText("Help Traveler");
+        mana.choice2.setText("Ignore Traveler");
+        mana.choice3.setText("Rob Traveler");
+
+        game.nextChoice1 = "Help Traveler";
+        game.nextChoice2 = "Forest Two";
+        game.nextChoice3 = "Rob Traveler";
     }
 
     public void doubtIt() {
@@ -346,7 +379,6 @@ public class Sequence {
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
-        mana.choice4.setVisible(false);
 
         if(player.hp > 0){
             game.nextChoice1 = "Just Murder";
@@ -356,7 +388,209 @@ public class Sequence {
 
     }
 
+    public void helpTraveler() {
+        travelerUnderRock = false;
+
+        mana.addPotion();
+        mana.addPotion();
+        mana.addLongSword();
+
+        player.hp = player.hp - 5;
+        mana.playerHpLabel.setText("" + player.hp);
+
+        mana.adventureText.setText("<You push against the boulder, helping the traveler out from under it.\n" + "" +
+                "The effort causes you to smash your hand>\n<You take 5 Damage>\nTraveler: Thank you so much! Please take this\n<You recieve 2 Potions and a LongSword\n" +
+                "<The traveler walks away, grateful>");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        if(player.hp > 0){
+            game.nextChoice1 = "Forest Two";
+        } else {
+            game.nextChoice1 = "Defeat";
+        }
+    }
+
+    public  void robTraveler() {
+        mana.addPotion();
+        mana.addDarkSword();
+
+        mana.adventureText.setText("");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        game.nextChoice1 = "Forest Two";
+    }
+
+
+    public void forestTwo() {
+        String fightOrSpell = "Druid: You have shown no regard for human life! You must pay!\n<Druid charges you!";
+
+        if (travelerUnderRock){
+            mana.adventureText.setText("<You descend farther ino the woods. You spot a lion walking towards you\nThe lion shifts into a"
+                    + " man with tribal tattoos all over his body>\nDruid: Hello, human. I am a druid, a protector of the woods and all life that inhabit it.\n" + fightOrSpell);
+        } else {
+            hasHealing = true;
+            player.exp = player.exp + 15;
+            mana.expLabel.setText("" + player.exp);
+        mana.adventureText.setText("<You descend farther ino the woods. You spot a lion walking towards you\nThe lion shifts into a"
+        + " man with tribal tattoos all over his body>\nDruid: Hello, human. I am a druid, a protector of the woods and all life that inhabit it."
+        + " The forest observed you help that traveler back there. The forest rewards you.\n <Druid hands you over a scroll. You are rewarded with 15 experience points and a Healing Spell.>");}
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        if(travelerUnderRock){
+            game.nextChoice1 = "Druid Battle";
+        } else {
+            game.nextChoice1 = "Forest Three";
+        }
+    }
+
+    public void druidBattle() {
+        mana.useItemButton.setVisible(false);
+        mana.choice2.setVisible(true);
+        mana.choice3.setVisible(true);
+
+        mana.adventureText.setText("What to do?");
+        mana.choice1.setText(battleChoice1);
+        mana.choice2.setText(battleChoice2);
+        mana.choice3.setText(battleChoice3);
+
+
+        game.nextChoice1 = "Attack Druid";
+        game.nextChoice2 = "Magic";
+        game.nextChoice3 = "Use Item";
+
+    }
+
+    public void attackDruid() {
+        mana.useItemButton.setVisible(false);
+
+        int playerDamage = rnd.nextInt(player.maxDamage - player.baseDamage + 1) + player.baseDamage;
+
+        mana.adventureText.setText("You attacked the " + druid.name + " and dealt " + playerDamage + " damage!");
+        druid.hp = druid.hp - playerDamage;
+
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        if (druid.hp > 0){
+            game.nextChoice1 = "Druid Attack";
+        } else {
+            game.nextChoice1 = "Druid Victory";
+        }
+    }
+
+    public void druidAttack() {
+        mana.useItemButton.setVisible(false);
+
+        int druidDamage = rnd.nextInt(druid.maxDamage - druid.baseDamage + 1) + druid.baseDamage;
+
+        player.hp = player.hp - druidDamage;
+        mana.playerHpLabel.setText("" + player.hp);
+
+        mana.adventureText.setText(druid.name +" deals " + druidDamage + " to you!");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        if(player.hp > 0){
+            game.nextChoice1 = "Druid Battle";
+        } else {
+            game.nextChoice1 = "Defeat";
+        }
+    }
+
+    public void druidVictory(){
+        mana.useItemButton.setVisible(false);
+        mana.addPotion();
+
+        player.exp = player.exp + druid.expWorth;
+        mana.expLabel.setText("" + player.exp);
+
+        mana.adventureText.setText("<The Druid falls to his knees. He has been defeated.\nYou recieve a Potion!\nYou have recieved " + druid.expWorth + " experience points!");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        game.nextChoice1 = "Forest Three";
+    }
+
+    public void forestThree(){
+        mana.useItemButton.setVisible(false);
+
+        mana.choice2.setVisible(true);
+        mana.choice3.setVisible(true);
+        if (hasHealing) {
+            mana.choice4.setVisible(true);
+        }
+
+        mana.adventureText.setText("<After a while of walking through the forest you see another lion.\n The lion seems to be wounded>");
+        mana.choice1.setText("Give a bit of Potion");
+        mana.choice2.setText("Ignore Lion");
+        mana.choice3.setText("Finish Lion Off");
+        mana.choice4.setText("(Special)Heal Lion");
+
+        game.nextChoice1 = "Potion Lion";
+        game.nextChoice2 = "Dark Wizard";
+        game.nextChoice1 = "Kill Lion";
+        game.nextChoice1 = "Heal Lion";
+    }
+
+    public void potionLion() {
+        mana.addPotion();
+        mana.addManaPotion();
+        mana.addEarthOrb();
+
+        mana.adventureText.setText("<You give the lion a little bit of one of your potions\nThe lion transforms into a human>\n" +
+                "Druid: Thank you, adventurer! Here are some items for my gratitude.\n<You receive a Potion, Mana Potion and Earth Orb." +
+                "\n<The Druid tranforms into a bird and flies away>");
+
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+        mana.choice4.setVisible(false);
+
+        game.nextChoice1 = "Dark Wizard";
+    }
+
+    public void killLion() {
+        mana.addPotion();
+        mana.addManaPotion();
+        mana.addHeavyBow();
+
+        mana.adventureText.setText("<You strike the lion and put it out of it's misery.\nThe lion transforms into a druid.\n You recieve a Potion, Mana Potion, and Heavy Bow>");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+        mana.choice4.setVisible(false);
+
+        game.nextChoice1 = "Dark Wizard";
+    }
+
+    public void healLion() {
+        mana.addPotion();
+        mana.addManaPotion();
+
+        mana.adventureText.setText("<You cast your healing spell on the lion.\nThe lions wounds disappear and the lion transforms into a human ");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+        mana.choice4.setVisible(false);
+
+        game.nextChoice1 = "Dark Wizard";
+    }
+
+    public void darkWizard() {
+
+    }
+
     public void defeat(){
+
         mana.adventureText.setText("Dang, you died fam.\n\n\nGAME OVER!");
 
         mana.choice1.setText("Try Again?");
