@@ -30,7 +30,6 @@ public class Game {
         sequence.defaultStats();
         sequence.setUIDefault();
         items.createTable();
-        inventory.testPrint();
 
 
     }

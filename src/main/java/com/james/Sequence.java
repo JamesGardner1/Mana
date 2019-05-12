@@ -215,8 +215,47 @@ public class Sequence {
     }
 
     public void banditVictory(){
+        player.exp = player.exp + bandit.expWorth;
+        mana.expLabel.setText("" + player.exp);
 
-        mana.adventureText.setText("Mysterious Voice: Hmmm, the GrandMaster may have picked the right one after all...\n You recieve a FireSpell and Potion!");
+        mana.adventureText.setText("Mysterious Voice: Hmmm, the GrandMaster may have picked the right one after all...\nYou recieve a FireSpell and Potion!\nYou have recieved " + bandit.expWorth + " experience points!");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+        mana.choice4.setVisible(false);
+
+        game.nextChoice1 = "After Bandit Battle";
+
+    }
+
+    public void afterBanditBattle() {
+        mana.choice2.setVisible(true);
+        mana.choice3.setVisible(true);
+
+        mana.adventureText.setText("Mysterious Voice: There might be some hope for you yet");
+        mana.choice1.setText("What are you talking about?! That guy almost killed me!");
+        mana.choice2.setText("Wait until I find you.....you are next");
+        mana.choice3.setVisible(false);
+        mana.choice4.setVisible(false);
+
+        game.nextChoice1 = "Just Murder";
+        game.nextChoice2 = "Doubt it";
+
+    }
+
+    public void twoPaths() {
+        mana.choice2.setVisible(true);
+
+        mana.adventureText.setText("Mysterious Voice: Oh, dont be so dramatic! That was your first test. Now you see that building in near the mountains? Go there for your second trial" +
+                "<You see a stone building in the distance. Two paths lead to it: Forest Path and Lake Path");
+        mana.choice1.setText("Take Forest Path");
+        mana.choice2.setText("Take Lake Path");
+        mana.choice3.setVisible(false);
+        mana.choice4.setVisible(false);
+
+        game.nextChoice1 = "Forest One";
+        game.nextChoice2 = "Lake One";
+
     }
 
     public void defeat(){
