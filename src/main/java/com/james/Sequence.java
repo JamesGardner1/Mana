@@ -10,6 +10,9 @@ public class Sequence {
     Player player = new Player();
     Enemy bandit = new Enemy("Bandit", 25,5,10, 25);
     Enemy druid = new Enemy("Druid", 40, 8, 15, 40);
+    Magic Fireball = new Magic("Fireball", 7,11,5);
+    Magic Heal = new Magic("Heal", 7, 11,5);
+    Magic druidHeal  = new Magic("Druid Heal", 12, 20,10);
     Item potion = new Item("Potion", 25);
     Item sword = new Item("Sword", 5);
     Item bow = new Item("Bow", 5);
@@ -23,7 +26,7 @@ public class Sequence {
     //Events & Spells
     boolean travelerUnderRock = true;
     boolean hasHealing = false;
-
+    boolean druidHealing = false;
 
 
 
@@ -68,6 +71,11 @@ public class Sequence {
         switch (nextChoice){
             //Battle Cases
             case "Use Item": useItem(); break;
+            case "Use Magic": useMagic();break;
+            //Magic Cases
+            case "Fire": fire(); break;
+            case "Heal": heal(); break;
+            case "Druid Heal": healTwo() break;
             //Story cases
             case "Who are you?": whoAreYou(); break;
             case "Chest Appears": chest(); break;
@@ -125,10 +133,6 @@ public class Sequence {
             game.nextChoice1 = "First Battle!";
         } else if (player.exp >= 25 && travelerUnderRock) {
             game.nextChoice1 = "Druid Battle";} else {}
-
-
-
-
     }
 
     public void itemEffect() {
@@ -158,10 +162,34 @@ public class Sequence {
         }
     }
 
+    public void useMagic() {
+        if (player.exp == 0) {
+            mana.choice1.setText(">>>");
+            mana.choice2.setVisible(false);
+            mana.choice3.setVisible(false);
+            mana.adventureText.setText("You have no magic to use");
+            game.nextChoice1 = "First Battle!";
+        } else {
+            if (hasHealing) {
+                mana.choice2.setVisible(false);
+            }
+            mana.adventureText.setText("Select a Magic");
+            mana.choice1.setText("Fire");
+            mana.choice2.setVisible(true);
+            if (druidHealing) {
+                mana.choice2.setText("Druid Heal");
+            } else { mana.choice2.setText("Heal");
+            mana.choice3.setVisible(false);
+        }}
+    }
+    //Magic
+
+    public void fire() {
+
+    }
     //Story
 
     public void awaken() {
-
         mana.adventureText.setText("<You awake from your slumber. You try to recall why you are on this stone platform with etched in symbols" +
                ", but you cant remember anything. You then here a mysterious elderly voice.>\nMysterious Voice: You have finally awaken");
         mana.choice1.setText("Who are you?");
@@ -575,8 +603,11 @@ public class Sequence {
     public void healLion() {
         mana.addPotion();
         mana.addManaPotion();
+        druidHealing = true;
 
-        mana.adventureText.setText("<You cast your healing spell on the lion.\nThe lions wounds disappear and the lion transforms into a human ");
+        mana.adventureText.setText("<You cast your healing spell on the lion.\nThe lions wounds disappear and the lion transforms into a human>" +
+                "\nDruid: Thank you adventurer! Where did you learn the spell? Only the druids know that! Nonetheless take this scroll. This will improve your healing\n" +
+                "<You receive another scroll and learned Druid Healing");
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);

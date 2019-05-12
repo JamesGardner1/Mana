@@ -82,9 +82,13 @@ public class Mana extends JFrame {
         allItemsListModel.addElement("Long Sword");
     }
 
+    public void addDarkSword() {
+        allItemsListModel.addElement("Dark Sword");
+    }
+
     public void addEarthOrb(){allItemsListModel.addElement("Earth Orb");}
 
-    public void addHeavyBow(){allItemsListModel.addElement("Dark Sword");}
+    public void addHeavyBow(){allItemsListModel.addElement("Heavy Bow");}
 
 
 

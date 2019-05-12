@@ -13,7 +13,6 @@ public class Magic {
         this.manaCost = manaCost;
     }
 
-    Magic Fireball = new Magic("Fireball", 7,11,5);
 
 
 
