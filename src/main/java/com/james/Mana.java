@@ -16,16 +16,16 @@ public class Mana extends JFrame {
     JLabel levelLabel;
     JLabel expLabel;
     JLabel manaLabel;
-    JList<Item> inventoryList;
+    JList<String> inventoryList;
 
-    ItemsDB items;
+    Item item;
 
-    DefaultListModel<Item> allItemsListModel;
+    DefaultListModel<String> allItemsListModel;
 
 
     public Mana(Game.ChoiceHandler choiceHandler) {
 
-        allItemsListModel = new DefaultListModel<Item>();
+        allItemsListModel = new DefaultListModel<String>();
         inventoryList.setModel(allItemsListModel);
 
 
@@ -48,6 +48,11 @@ public class Mana extends JFrame {
         choice4.setActionCommand("c4");
 
 
+
+
+    }
+    public void addPotion() {
+        allItemsListModel.addElement("Potion");
     }
 
 

@@ -10,11 +10,7 @@ public class Sequence {
     Player player = new Player();
     Enemy bandit = new Enemy("Bandit", 25,5,10, 25);
     Random rnd = new Random();
-    Item potion = new Item("Potion", 25);
-    Item sword = new Item("Sword", 5);
-    Item bow = new Item("Bow", 5);
-    Item orb = new Item("Orb", 5);
-    Item longSword = new Item("Long Sword", 10);
+    Item item;
 
 
 
@@ -137,6 +133,7 @@ public class Sequence {
     }
 
     public void selectSword() {
+        mana.addPotion();
 
         mana.adventureText.setText("Mysterious Voice: Basic, yet effective...");
         mana.choice1.setText(">>>");

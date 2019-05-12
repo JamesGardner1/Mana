@@ -9,7 +9,7 @@ public class Game {
     Player player = new Player();
     Mana mana = new Mana(choiceHandler);
     ItemsDB items = new ItemsDB();
-    Item inventory = new Item();
+    Item inventory;
     TitleScreen titleScreen = new TitleScreen(choiceHandler);
     VisiblityManager visiblityManager = new VisiblityManager(mana, titleScreen);
     Sequence sequence = new Sequence(this, mana, titleScreen, visiblityManager);
