@@ -17,8 +17,13 @@ public class Mana extends JFrame {
     JLabel expLabel;
     JLabel manaLabel;
     JList<String> inventoryList;
+    JButton useItemButton;
 
     Item item;
+    Player player;
+    Game game;
+
+
 
     DefaultListModel<String> allItemsListModel;
 
@@ -27,12 +32,17 @@ public class Mana extends JFrame {
 
         allItemsListModel = new DefaultListModel<String>();
         inventoryList.setModel(allItemsListModel);
+        inventoryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        addListeners();
 
 
         setContentPane(mainPanel);
         pack();
         setVisible(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        useItemButton.setVisible(false);
 
 
 
@@ -51,10 +61,65 @@ public class Mana extends JFrame {
 
 
     }
+
     public void addPotion() {
         allItemsListModel.addElement("Potion");
     }
 
+    public void addSword() {
+        allItemsListModel.addElement("Sword");
+    }
+
+    public void addBow() { allItemsListModel.addElement("Bow"); }
+
+    public void addOrb() {
+        allItemsListModel.addElement("Orb");
+    }
+
+    public void addLongSword() {
+        allItemsListModel.addElement("Potion");
+    }
+
+
+    public void addListeners() {
+        useItemButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                int selectedIndex = inventoryList.getSelectedIndex();
+                if (selectedIndex != -1) {
+                    allItemsListModel.remove(selectedIndex);
+                }else{
+                    JOptionPane.showMessageDialog(Mana.this, "Please select an item to use.");
+                }
+//                if (inventoryList.getSelectedValue() == "Potion") {
+//                    usePotion();
+//                }
+
+            }
+        });
+    }
+//    public void usePotion() {
+//        player.hp = player.hp + item.potion.effect;
+//        playerHpLabel.setText("" + player.hp);
+//
+//        adventureText.setText("You have gained 25 health.");
+//
+//        choice1.setText(">>>");
+//        choice2.setVisible(false);
+//        choice3.setVisible(false);
+//        choice4.setVisible(false);
+//
+//        if (player.exp == 0) {
+//            game.nextChoice1 = "Bandit Attack";
+//        } else if (player.exp > 25) {
+//            game.nextChoice1 = "Wizard Attack";
+//        } else {
+//            game.nextChoice1 = "Boss Attack!";
+//        }
+//
+//        useItemButton.setVisible(false);
+//    }
 
 }
 

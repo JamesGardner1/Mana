@@ -55,17 +55,23 @@ public class Sequence {
 
     public void selectChoice(String nextChoice){
         switch (nextChoice){
+            //Battle Cases
+            case "Use Item": useItem(); break;
+            //Story cases
             case "Who are you?": whoAreYou(); break;
             case "Chest Appears": chest(); break;
             case "Open Chest": selectWeapon(); break;
             case "Refuse": standStill(); break;
+            //Story cases - Weapon Selection
             case "Sword": selectSword(); break;
             case "Bow" : selectBow(); break;
             case "Orb" : selectOrb(); break;
+            //First Battle!
             case "First Battle!" : firstBattle(); break;
             case "Attack Bandit" : attackBandit(); break;
             case "Bandit Attack" : banditAttack(); break;
             case "Bandit Victory": banditVictory(); break;
+            //Story cases
             case "After Bandit Battle" : afterBanditBattle(); break;
             case "Just Murder": twoPaths(); break;
             case "Doubt It": doubtIt(); break;
@@ -74,7 +80,56 @@ public class Sequence {
 
     }
 
+    //Battle Methods
+
+    public void useItem() {
+        mana.useItemButton.setVisible(true);
+
+
+
+        mana.adventureText.setText("Please select an item to use");
+        mana.choice1.setText("Go back");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+        mana.choice4.setVisible(false);
+
+        if (mana.inventoryList.getSelectedValue() == "Potion") {
+            player.hp = player.hp + item.potion.effect;
+            mana.playerHpLabel.setText("" + player.hp);
+
+            mana.adventureText.setText("You have gained 25 health.");
+
+            mana.choice1.setText(">>>");
+            mana.choice2.setVisible(false);
+            mana.choice3.setVisible(false);
+            mana.choice4.setVisible(false);
+
+            if (player.exp == 0) {
+                game.nextChoice1 = "Bandit Attack";
+            } else if (player.exp > 25) {
+                game.nextChoice1 = "Wizard Attack";
+            } else {
+                game.nextChoice1 = "Boss Attack!";
+            }
+
+            mana.useItemButton.setVisible(false);
+
+
+        }
+
+        if (player.exp == 0) {
+            game.nextChoice1 = "First Battle!";
+        } else {} //TO DO Add later
+
+//        if (mana.useItemButton.getSe)
+
+
+    }
+
+    //Story
+
     public void awaken() {
+
         mana.adventureText.setText("<You awake from your slumber. You try to recall why you are on this stone platform with etched in symbols" +
                ", but you cant remember anything. You then here a mysterious elderly voice.>\nMysterious Voice: You have finally awaken");
         mana.choice1.setText("Who are you?");
@@ -133,7 +188,7 @@ public class Sequence {
     }
 
     public void selectSword() {
-        mana.addPotion();
+        mana.addSword();
 
         mana.adventureText.setText("Mysterious Voice: Basic, yet effective...");
         mana.choice1.setText(">>>");
@@ -146,6 +201,8 @@ public class Sequence {
     }
 
     public void selectBow() {
+        mana.addBow();
+
         mana.adventureText.setText("Mysterious Voice: I hope you know how to use that!\n <Mysterious Voice Laughs>");
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
@@ -157,6 +214,8 @@ public class Sequence {
     }
 
     public void selectOrb() {
+        mana.addOrb();
+
         mana.adventureText.setText("Mysterious Voice: Ha! Do you even know what that is?!");
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
@@ -179,7 +238,8 @@ public class Sequence {
         mana.choice4.setText(battleChoice4);
 
         game.nextChoice1 = "Attack Bandit";
-        game.nextChoice2 = "Use Item";
+        game.nextChoice2 = "Magic";
+        game.nextChoice3 = "Use Item";
 
     }
 
@@ -223,6 +283,8 @@ public class Sequence {
     }
 
     public void banditVictory(){
+        mana.addPotion();
+
         player.exp = player.exp + bandit.expWorth;
         mana.expLabel.setText("" + player.exp);
 
