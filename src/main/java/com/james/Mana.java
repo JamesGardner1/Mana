@@ -45,7 +45,7 @@ public class Mana extends JFrame {
         useItemButton.setVisible(false);
 
 
-
+        useItemButton.addActionListener(choiceHandler);
 
         choice1.addActionListener(choiceHandler);
         choice2.addActionListener(choiceHandler);
@@ -58,7 +58,7 @@ public class Mana extends JFrame {
         choice4.setActionCommand("c4");
 
 
-
+        useItemButton.setActionCommand("useitem");
 
     }
 
@@ -87,39 +87,42 @@ public class Mana extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 int selectedIndex = inventoryList.getSelectedIndex();
+                String toUse = inventoryList.getSelectedValue();
+
                 if (selectedIndex != -1) {
                     allItemsListModel.remove(selectedIndex);
                 }else{
                     JOptionPane.showMessageDialog(Mana.this, "Please select an item to use.");
                 }
-//                if (inventoryList.getSelectedValue() == "Potion") {
-//                    usePotion();
-//                }
+
+                if (toUse == "Potion") {
+                    usePotion();
+                }
+
 
             }
         });
     }
-//    public void usePotion() {
-//        player.hp = player.hp + item.potion.effect;
-//        playerHpLabel.setText("" + player.hp);
-//
-//        adventureText.setText("You have gained 25 health.");
-//
-//        choice1.setText(">>>");
-//        choice2.setVisible(false);
-//        choice3.setVisible(false);
-//        choice4.setVisible(false);
-//
+    public void usePotion() {
+
+
+        adventureText.setText("You have gained 25 health.");
+
+        choice1.setText(">>>");
+        choice2.setVisible(false);
+        choice3.setVisible(false);
+        choice4.setVisible(false);
+
 //        if (player.exp == 0) {
-//            game.nextChoice1 = "Bandit Attack";
+//           game.nextChoice1 = "Bandit Attack";
 //        } else if (player.exp > 25) {
 //            game.nextChoice1 = "Wizard Attack";
 //        } else {
 //            game.nextChoice1 = "Boss Attack!";
 //        }
-//
-//        useItemButton.setVisible(false);
-//    }
+
+        useItemButton.setVisible(false);
+    }
 
 }
 

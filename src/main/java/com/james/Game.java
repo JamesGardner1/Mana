@@ -47,6 +47,7 @@ public class Game {
                 case "c2": sequence.selectChoice(nextChoice2);break;
                 case "c3": sequence.selectChoice(nextChoice3);break;
                 case "c4": sequence.selectChoice(nextChoice4);break;
+                case "useitem": sequence.itemEffect();break;
             }
 
         }

@@ -93,8 +93,26 @@ public class Sequence {
         mana.choice3.setVisible(false);
         mana.choice4.setVisible(false);
 
-        if (mana.inventoryList.getSelectedValue() == "Potion") {
-            player.hp = player.hp + item.potion.effect;
+
+
+
+
+        if (player.exp == 0) {
+            game.nextChoice1 = "First Battle!";
+        } else {} //TO DO Add later
+
+
+
+
+    }
+
+    public void itemEffect() {
+
+        if (mana.inventoryList.getSelectedValue() == "Potion"){
+            player.hp = player.hp + 25;
+            if (player.hp > player.maxHp) {
+                player.hp = player.maxHp;
+            }
             mana.playerHpLabel.setText("" + player.hp);
 
             mana.adventureText.setText("You have gained 25 health.");
@@ -104,6 +122,8 @@ public class Sequence {
             mana.choice3.setVisible(false);
             mana.choice4.setVisible(false);
 
+            mana.useItemButton.setVisible(false);
+
             if (player.exp == 0) {
                 game.nextChoice1 = "Bandit Attack";
             } else if (player.exp > 25) {
@@ -111,24 +131,14 @@ public class Sequence {
             } else {
                 game.nextChoice1 = "Boss Attack!";
             }
-
-            mana.useItemButton.setVisible(false);
-
-
         }
-
-        if (player.exp == 0) {
-            game.nextChoice1 = "First Battle!";
-        } else {} //TO DO Add later
-
-//        if (mana.useItemButton.getSe)
-
-
     }
 
     //Story
 
     public void awaken() {
+
+        mana.addPotion();
 
         mana.adventureText.setText("<You awake from your slumber. You try to recall why you are on this stone platform with etched in symbols" +
                ", but you cant remember anything. You then here a mysterious elderly voice.>\nMysterious Voice: You have finally awaken");
