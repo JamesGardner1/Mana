@@ -10,7 +10,15 @@ public class Sequence {
     Player player = new Player();
     Enemy bandit = new Enemy("Bandit", 25,5,10, 25);
     Random rnd = new Random();
-//    ItemsDB items = new ItemsDB();
+    Item potion = new Item("Potion", 25);
+    Item sword = new Item("Sword", 5);
+    Item bow = new Item("Bow", 5);
+    Item orb = new Item("Orb", 5);
+    Item longSword = new Item("Long Sword", 10);
+
+
+
+
 
     //Choice Battle Interface
     String battleChoice1 = "Attack";
@@ -62,6 +70,9 @@ public class Sequence {
             case "Attack Bandit" : attackBandit(); break;
             case "Bandit Attack" : banditAttack(); break;
             case "Bandit Victory": banditVictory(); break;
+            case "After Bandit Battle" : afterBanditBattle(); break;
+            case "Just Murder": twoPaths(); break;
+            case "Doubt It": doubtIt(); break;
 
         }
 
@@ -230,7 +241,6 @@ public class Sequence {
 
     public void afterBanditBattle() {
         mana.choice2.setVisible(true);
-        mana.choice3.setVisible(true);
 
         mana.adventureText.setText("Mysterious Voice: There might be some hope for you yet");
         mana.choice1.setText("What are you talking about?! That guy almost killed me!");
@@ -239,7 +249,7 @@ public class Sequence {
         mana.choice4.setVisible(false);
 
         game.nextChoice1 = "Just Murder";
-        game.nextChoice2 = "Doubt it";
+        game.nextChoice2 = "Doubt It";
 
     }
 
@@ -255,6 +265,25 @@ public class Sequence {
 
         game.nextChoice1 = "Forest One";
         game.nextChoice2 = "Lake One";
+
+    }
+
+    public void doubtIt() {
+
+        player.hp = player.hp - 5;
+        mana.playerHpLabel.setText("" + player.hp);
+
+        mana.adventureText.setText("Mysterious Voice: Ha! I doubt it!\n<You feel an agonizing pain in your head.\nYou take 5 damage!\nMysterious Voice: Lets try that again..");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+        mana.choice4.setVisible(false);
+
+        if(player.hp > 0){
+            game.nextChoice1 = "Just Murder";
+        } else {
+            game.nextChoice1 = "Defeat";
+        }
 
     }
 
