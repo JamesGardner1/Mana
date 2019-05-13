@@ -45,6 +45,7 @@ public class Mana extends JFrame {
         useItemButton.setVisible(false);
         useItemButton.addActionListener(choiceHandler);
 
+
         choice4.setVisible(false);
 
         choice1.addActionListener(choiceHandler);

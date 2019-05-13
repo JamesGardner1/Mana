@@ -10,8 +10,8 @@ public class Sequence {
     Player player = new Player();
     Enemy bandit = new Enemy("Bandit", 25,5,10, 25);
     Enemy druid = new Enemy("Druid", 40, 8, 15, 40);
-    Magic Fireball = new Magic("Fireball", 7,11,5);
-    Magic Heal = new Magic("Heal", 7, 11,5);
+    Magic fireBall = new Magic("Fireball", 15,22,5);
+    Magic heal = new Magic("Heal", 7, 11,5);
     Magic druidHeal  = new Magic("Druid Heal", 12, 20,10);
     Item potion = new Item("Potion", 25);
     Item sword = new Item("Sword", 5);
@@ -32,13 +32,8 @@ public class Sequence {
 
     //Choice Battle Interface
     String battleChoice1 = "Attack";
-    String battleChoice2 = "Magic";
+    String battleChoice2 = "Use Magic";
     String battleChoice3 = "Use Item";
-
-
-
-
-
 
     public Sequence(Game gameStory, Mana manaStory, TitleScreen titleStory, VisiblityManager visibiltyStory){
         game = gameStory;
@@ -69,13 +64,15 @@ public class Sequence {
 
     public void selectChoice(String nextChoice){
         switch (nextChoice){
+            //Game Cases
+            case "Level Up": levelUp();break;
             //Battle Cases
             case "Use Item": useItem(); break;
             case "Use Magic": useMagic();break;
             //Magic Cases
             case "Fire": fire(); break;
             case "Heal": heal(); break;
-            case "Druid Heal": healTwo() break;
+            case "Druid Heal": healTwo();break;
             //Story cases
             case "Who are you?": whoAreYou(); break;
             case "Chest Appears": chest(); break;
@@ -117,6 +114,32 @@ public class Sequence {
 
         }
 
+    }
+    //Game Methods
+    public void levelUp() {
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        player.lvl = player.lvl + 1;
+        mana.levelLabel.setText("" + player.lvl);
+        mana.expBar.setMaximum(100);
+        if (player.exp == 40) {
+        mana.expBar.setValue(0);
+        } else { }
+
+        player.exp = 0;
+        player.hp = 75;
+        mana.playerHpLabel.setText("" + player.hp);
+        player.maxHp = 75;
+        player.mana = 40;
+        mana.manaLabel.setText("" + player.hp);
+        player.baseDamage = 8;
+        player.maxDamage = 16;
+
+        mana.adventureText.setText("Congratulations! You leveled up! You are now level 2!");
+        mana.choice1.setText(">>>");
+
+        game.nextChoice1 = "Forest Three";
     }
 
     //Battle Methods
@@ -171,20 +194,91 @@ public class Sequence {
             game.nextChoice1 = "First Battle!";
         } else {
             if (hasHealing) {
-                mana.choice2.setVisible(false);
+                mana.choice2.setVisible(true);
             }
             mana.adventureText.setText("Select a Magic");
-            mana.choice1.setText("Fire");
+            mana.choice1.setText("Fireball ManaCost: 5");
+            game.nextChoice1 = "Fire";
             mana.choice2.setVisible(true);
             if (druidHealing) {
                 mana.choice2.setText("Druid Heal");
             } else { mana.choice2.setText("Heal");
             mana.choice3.setVisible(false);
         }}
+
     }
     //Magic
 
     public void fire() {
+        mana.useItemButton.setVisible(false);
+
+        int magicDamage = rnd.nextInt(fireBall.maxDamage - fireBall.baseDamage + 1) + fireBall.baseDamage;
+
+        mana.adventureText.setText("You hurl a fireball at the " + druid.name + " and dealt " + magicDamage + " damage!");
+        druid.hp = druid.hp - magicDamage;
+
+        player.mana = player.mana - fireBall.manaCost;
+        mana.manaLabel.setText("" + player.mana);
+
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        if (druid.hp > 0){
+            game.nextChoice1 = "Druid Attack";
+        } else {
+            game.nextChoice1 = "Druid Victory";
+        }
+
+
+    }
+
+    public void heal() {
+        mana.useItemButton.setVisible(false);
+
+        int healAmount = rnd.nextInt(heal.maxDamage - heal.baseDamage + 1) + heal.baseDamage;
+
+        mana.adventureText.setText("You heal yourself for " + healAmount + " health points!");
+        player.hp = player.hp + healAmount;
+        if (player.hp > player.maxHp) {
+            player.hp = player.maxHp;
+        }
+        mana.playerHpLabel.setText("" + player.hp);
+
+        player.mana = player.mana - heal.manaCost;
+        mana.manaLabel.setText("" + player.mana);
+
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+//        if (druid.hp > 0){
+//            game.nextChoice1 = "Druid Attack";
+//        } else {
+//            game.nextChoice1 = "Druid Victory";
+//        }
+
+
+    }
+
+    public void healTwo() {
+        mana.useItemButton.setVisible(false);
+
+        int healAmount = rnd.nextInt(druidHeal.maxDamage - druidHeal.baseDamage + 1) + druidHeal.baseDamage;
+
+        mana.adventureText.setText("You heal yourself for " + healAmount + " health points!");
+        player.hp = player.hp + healAmount;
+        if (player.hp > player.maxHp) {
+            player.hp = player.maxHp;
+        }
+        mana.playerHpLabel.setText("" + player.hp);
+
+        player.mana = player.mana - druidHeal.manaCost;
+        mana.manaLabel.setText("" + player.mana);
+
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
 
     }
     //Story
@@ -298,7 +392,7 @@ public class Sequence {
 
 
         game.nextChoice1 = "Attack Bandit";
-        game.nextChoice2 = "Magic";
+        game.nextChoice2 = "Use Magic";
         game.nextChoice3 = "Use Item";
 
     }
@@ -349,6 +443,9 @@ public class Sequence {
 
         player.exp = player.exp + bandit.expWorth;
         mana.expLabel.setText("" + player.exp);
+
+        mana.expBar.setValue(player.exp);
+
 
         mana.adventureText.setText("Mysterious Voice: Hmmm, the GrandMaster may have picked the right one after all...\nYou recieve a FireSpell and Potion!\nYou have recieved " + bandit.expWorth + " experience points!");
         mana.choice1.setText(">>>");
@@ -473,7 +570,7 @@ public class Sequence {
         if(travelerUnderRock){
             game.nextChoice1 = "Druid Battle";
         } else {
-            game.nextChoice1 = "Forest Three";
+            game.nextChoice1 = "Level Up";
         }
     }
 
@@ -489,7 +586,7 @@ public class Sequence {
 
 
         game.nextChoice1 = "Attack Druid";
-        game.nextChoice2 = "Magic";
+        game.nextChoice2 = "Use Magic";
         game.nextChoice3 = "Use Item";
 
     }
@@ -545,7 +642,7 @@ public class Sequence {
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
 
-        game.nextChoice1 = "Forest Three";
+        game.nextChoice1 = "Level Up";
     }
 
     public void forestThree(){
