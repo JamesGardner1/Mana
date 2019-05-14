@@ -817,6 +817,21 @@ public class Sequence {
         game.nextChoice1 = "Attack Bandit";
     }
 
+    public void banditFishermanVictory() {
+        mana.addPotion();
+
+        player.exp = player.exp + bandit.expWorth;
+        mana.expLabel.setText("" + player.exp);
+
+        mana.adventureText.setText("<The bandit has been defeated. You look over to the fisherman and his inflicted wounds causes him to die.\nYou recieve a Potion!\nYou have recieved " + bandit.expWorth + " experience points!>");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        game.nextChoice1 = "Lake Two";
+
+    }
+
 
     public void lakeTwo() {
         mana.choice2.setVisible(true);
@@ -910,7 +925,7 @@ public class Sequence {
         mana.choice3.setText(battleChoice3);
 
 
-        game.nextChoice1 = "Attack Druid";
+        game.nextChoice1 = "Attack Ghost";
         game.nextChoice2 = "Use Magic";
         game.nextChoice3 = "Use Item";
 
@@ -970,7 +985,7 @@ public class Sequence {
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
 
-        game.nextChoice1 = "Level Up";
+        game.nextChoice1 = "Dark Wizard";
     }
 
 
