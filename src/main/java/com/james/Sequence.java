@@ -7,6 +7,7 @@ public class Sequence {
     Mana mana;
     TitleScreen titleScreen;
     VisiblityManager visiblityManager;
+    KarmaDB karma;
     Player player = new Player();
     Enemy bandit = new Enemy("Bandit", 25,5,10, 25);
     Enemy druid = new Enemy("Druid", 40, 8, 15, 40);
@@ -569,11 +570,11 @@ public class Sequence {
 
     public void helpTraveler() {
         travelerUnderRock = false;
+        karma.goodTraveler();
 
         mana.addPotion();
         mana.addPotion();
         mana.addUpgrade1();
-
 
         player.baseDamage = player.baseDamage + 5;
         player.maxDamage = player.maxDamage + 8;
