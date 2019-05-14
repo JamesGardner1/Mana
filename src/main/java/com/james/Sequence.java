@@ -27,6 +27,8 @@ public class Sequence {
     boolean travelerUnderRock = true;
     boolean hasHealing = false;
     boolean druidHealing = false;
+    boolean lakePath = false;
+    boolean fishermanHelped = false;
 
 
 
@@ -66,46 +68,57 @@ public class Sequence {
         switch (nextChoice){
             //Game Cases
             case "Level Up": levelUp();break;
+
             //Battle Cases
             case "Use Item": useItem(); break;
             case "Use Magic": useMagic();break;
+
             //Magic Cases
             case "Fire": fire(); break;
             case "Heal": heal(); break;
             case "Druid Heal": healTwo();break;
+
             //Story cases
             case "Who are you?": whoAreYou(); break;
             case "Chest Appears": chest(); break;
             case "Open Chest": selectWeapon(); break;
             case "Refuse": standStill(); break;
-            //Story cases - Weapon Selection
             case "Sword": selectSword(); break;
             case "Bow" : selectBow(); break;
             case "Orb" : selectOrb(); break;
-            //First Battle!
-            case "First Battle!" : firstBattle(); break;
-            case "Attack Bandit" : attackBandit(); break;
-            case "Bandit Attack" : banditAttack(); break;
-            case "Bandit Victory": banditVictory(); break;
-            //Story cases - Phase 2
             case "After Bandit Battle" : afterBanditBattle(); break;
             case "Just Murder": twoPaths(); break;
             case "Doubt It": doubtIt(); break;
+
             //Story cases - Forest
             case "Forest One": forestOne();break;
             case "Help Traveler": helpTraveler(); break;
             case "Forest Two": forestTwo();break;
             case "Rob Traveler": robTraveler();break;
-            case "Druid Battle": druidBattle();break;
-            case "Attack Druid": attackDruid();break;
-            case "Druid Attack": druidAttack();break;
-            case "Druid Victory": druidVictory();break;
             case "Forest Three": forestThree();break;
             case "Potion Lion": potionLion();break;
             case "Kill Lion": killLion();break;
             case "Heal Lion": healLion();break;
             //Story cases Phase 3
             case "Dark Wizard": darkWizard();break;
+
+            //BattleCases
+            //Bandit
+            case "First Battle!" : firstBattle(); break;
+            case "Attack Bandit" : attackBandit(); break;
+            case "Bandit Attack" : banditAttack(); break;
+            case "Bandit Victory": banditVictory(); break;
+            //Druid
+            case "Druid Battle": druidBattle();break;
+            case "Attack Druid": attackDruid();break;
+            case "Druid Attack": druidAttack();break;
+            case "Druid Victory": druidVictory();break;
+            //Ghost
+            case "Ghost Battle": druidBattle();break;
+            case "Attack Ghost": attackDruid();break;
+            case "Ghost Attack": druidAttack();break;
+            case "Ghost Victory": druidVictory();break;
+            //Dark Wizard
 
             //Dead
             case "Defeat": defeat();
@@ -132,14 +145,18 @@ public class Sequence {
         mana.playerHpLabel.setText("" + player.hp);
         player.maxHp = 75;
         player.mana = 40;
-        mana.manaLabel.setText("" + player.hp);
+        mana.manaLabel.setText("" + player.mana);
         player.baseDamage = 8;
         player.maxDamage = 16;
 
         mana.adventureText.setText("Congratulations! You leveled up! You are now level 2!");
         mana.choice1.setText(">>>");
 
-        game.nextChoice1 = "Forest Three";
+        //Levels Up Depending on where the character is at in the story
+        if (lakePath) {
+            game.nextChoice1 = "Lake Two";
+        } else {
+            game.nextChoice1 = "Forest Three";}
     }
 
     //Battle Methods
@@ -175,7 +192,7 @@ public class Sequence {
 
             mana.useItemButton.setVisible(false);
 
-            if (player.exp == 0) {
+            if (player.exp == 0 || lakePath) {
                 game.nextChoice1 = "Bandit Attack";
             } else if (player.exp >= 25 && travelerUnderRock) {
                 game.nextChoice1 = "Druid Attack";
@@ -211,10 +228,26 @@ public class Sequence {
 
     public void fire() {
         mana.useItemButton.setVisible(false);
-
         int magicDamage = rnd.nextInt(fireBall.maxDamage - fireBall.baseDamage + 1) + fireBall.baseDamage;
+        if (lakePath) {
+            mana.adventureText.setText("You hurl a fireball at the " + bandit.name + " and dealt " + magicDamage + " damage!");
+            bandit.hp = bandit.hp - magicDamage;
 
-        mana.adventureText.setText("You hurl a fireball at the " + druid.name + " and dealt " + magicDamage + " damage!");
+            player.mana = player.mana - fireBall.manaCost;
+            mana.manaLabel.setText("" + player.mana);
+
+            mana.choice1.setText(">>>");
+            mana.choice2.setVisible(false);
+            mana.choice3.setVisible(false);
+
+            if (bandit.hp > 0){
+                game.nextChoice1 = "Bandit Attack";
+            } else {
+                game.nextChoice1 = "Bandit Fisherman Victory";
+            }
+        } else {
+
+            mana.adventureText.setText("You hurl a fireball at the " + druid.name + " and dealt " + magicDamage + " damage!");
         druid.hp = druid.hp - magicDamage;
 
         player.mana = player.mana - fireBall.manaCost;
@@ -231,7 +264,7 @@ public class Sequence {
         }
 
 
-    }
+    }}
 
     public void heal() {
         mana.useItemButton.setVisible(false);
@@ -467,34 +500,6 @@ public class Sequence {
         game.nextChoice2 = "Doubt It";
     }
 
-    public void twoPaths() {
-        mana.choice2.setVisible(true);
-
-        mana.adventureText.setText("Mysterious Voice: Oh, dont be so dramatic! That was your first test. Now you see that building in near the mountains? Go there for your second trial" +
-                "<You see a stone building in the distance. Two paths lead to it: Forest Path and Lake Path");
-        mana.choice1.setText("Take Forest Path");
-        mana.choice2.setText("Take Lake Path");
-        mana.choice3.setVisible(false);
-
-        game.nextChoice1 = "Forest One";
-        game.nextChoice2 = "Lake One";
-    }
-
-    public void forestOne() {
-        mana.choice2.setVisible(true);
-        mana.choice3.setVisible(true);
-
-        mana.adventureText.setText("<You walk towards the forest>\n<You hear screaming in the distance and head towards the sound, farther into the forest>" +
-                "\nYou stumble upon a traveler stuck under a huge boulder\nTraveler:Please help me!");
-        mana.choice1.setText("Help Traveler");
-        mana.choice2.setText("Ignore Traveler");
-        mana.choice3.setText("Rob Traveler");
-
-        game.nextChoice1 = "Help Traveler";
-        game.nextChoice2 = "Forest Two";
-        game.nextChoice3 = "Rob Traveler";
-    }
-
     public void doubtIt() {
 
         player.hp = player.hp - 5;
@@ -513,18 +518,52 @@ public class Sequence {
 
     }
 
+    public void twoPaths() {
+        mana.choice2.setVisible(true);
+
+        mana.adventureText.setText("Mysterious Voice: Oh, dont be so dramatic! That was your first test. Now you see that building in near the mountains? Go there for your second trial" +
+                "<You see a stone building in the distance. Two paths lead to it: Forest Path and Lake Path");
+        mana.choice1.setText("Take Forest Path");
+        mana.choice2.setText("Take Lake Path");
+        mana.choice3.setVisible(false);
+
+        game.nextChoice1 = "Forest One";
+        game.nextChoice2 = "Lake One";
+    }
+
+    /// Forest Story
+
+    public void forestOne() {
+        mana.choice2.setVisible(true);
+        mana.choice3.setVisible(true);
+
+        mana.adventureText.setText("<You walk towards the forest>\n<You hear screaming in the distance and head towards the sound, farther into the forest>" +
+                "\nYou stumble upon a traveler stuck under a huge boulder\nTraveler:Please help me!");
+        mana.choice1.setText("Help Traveler");
+        mana.choice2.setText("Ignore Traveler");
+        mana.choice3.setText("Rob Traveler");
+
+        game.nextChoice1 = "Help Traveler";
+        game.nextChoice2 = "Forest Two";
+        game.nextChoice3 = "Rob Traveler";
+    }
+
     public void helpTraveler() {
         travelerUnderRock = false;
 
         mana.addPotion();
         mana.addPotion();
-        mana.addLongSword();
+        mana.addUpgrade1();
+
+
+        player.baseDamage = player.baseDamage + 5;
+        player.maxDamage = player.maxDamage + 8;
 
         player.hp = player.hp - 5;
         mana.playerHpLabel.setText("" + player.hp);
 
         mana.adventureText.setText("<You push against the boulder, helping the traveler out from under it.\n" + "" +
-                "The effort causes you to smash your hand>\n<You take 5 Damage>\nTraveler: Thank you so much! Please take this\n<You recieve 2 Potions and a LongSword\n" +
+                "The effort causes you to smash your hand>\n<You take 5 Damage>\nTraveler: Thank you so much! Please take this\n<You receive 2 Potions and a weapon upgrade!\n" +
                 "<The traveler walks away, grateful>");
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
@@ -537,11 +576,15 @@ public class Sequence {
         }
     }
 
-    public  void robTraveler() {
+    public void robTraveler() {
         mana.addPotion();
-        mana.addDarkSword();
+        mana.addUpgrade2();
 
-        mana.adventureText.setText("");
+        player.baseDamage = player.baseDamage + 9;
+        player.maxDamage = player.maxDamage + 15;
+
+        mana.adventureText.setText("<You watch the traveler struggle under the boulder and take the backpack next to him\n" +
+                "You receive a potion and a big weapon upgrade!!>");
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
@@ -662,14 +705,13 @@ public class Sequence {
 
         game.nextChoice1 = "Potion Lion";
         game.nextChoice2 = "Dark Wizard";
-        game.nextChoice1 = "Kill Lion";
-        game.nextChoice1 = "Heal Lion";
+        game.nextChoice3 = "Kill Lion";
+        game.nextChoice4 = "Heal Lion";
     }
 
     public void potionLion() {
         mana.addPotion();
         mana.addManaPotion();
-        mana.addEarthOrb();
 
         mana.adventureText.setText("<You give the lion a little bit of one of your potions\nThe lion transforms into a human>\n" +
                 "Druid: Thank you, adventurer! Here are some items for my gratitude.\n<You receive a Potion, Mana Potion and Earth Orb." +
@@ -686,7 +728,6 @@ public class Sequence {
     public void killLion() {
         mana.addPotion();
         mana.addManaPotion();
-        mana.addHeavyBow();
 
         mana.adventureText.setText("<You strike the lion and put it out of it's misery.\nThe lion transforms into a druid.\n You recieve a Potion, Mana Potion, and Heavy Bow>");
         mana.choice1.setText(">>>");
@@ -712,6 +753,126 @@ public class Sequence {
 
         game.nextChoice1 = "Dark Wizard";
     }
+
+    // Lake Story
+
+    public void lakeOne() {
+        lakePath = true;
+        mana.choice2.setVisible(true);
+        mana.choice3.setVisible(true);
+
+        mana.adventureText.setText("<You walk towards the lake.\nYou hear someone crying for help." +
+                "\nYou stumble upon a fisherman getting robbed by a bandit.>\nFisherman: Please help me!");
+        mana.choice1.setText("Help Fisherman");
+        mana.choice2.setText("Ignore Fisherman");
+        mana.choice3.setText("Help Bandit");
+
+        game.nextChoice1 = "Help Fisherman";
+        game.nextChoice2 = "Lake Two";
+        game.nextChoice3 = "Help Bandit";
+    }
+
+    public void helpFisherman() {
+        fishermanHelped = true;
+        mana.adventureText.setText("<You come to the aid of the fisherman. The bandit charges you!>");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        game.nextChoice1 = "Attack Bandit";
+    }
+
+    public void helpBandit() {
+        mana.addManaPotion();
+        mana.addUpgrade1();
+
+        mana.adventureText.setText("<You decide to help the bandit and you both rob the fisherman and split his belongings.\n" +
+                "You recieve a mana potion and a weapon upgrade! You turn around and the bandit charges you.>");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        game.nextChoice1 = "Attack Bandit";
+    }
+
+
+    public void lakeTwo() {
+        mana.choice2.setVisible(true);
+        mana.choice3.setVisible(true);
+
+        mana.adventureText.setText("<You continue you down the lake path and a hooded mystical man approaches you.>\n" +
+                "Mage: Hmmm...I sense a great power within you, adventurer. One you have not the littlest clue about\n" +
+                "If you answer this correctly you will be worthy of this scroll:\nDoes pineapple belong on pizza?");
+        mana.choice1.setText("Yes");
+        mana.choice2.setText("Its up to whom eats the pizza");
+        mana.choice3.setText("No");
+
+        game.nextChoice1 = "Yes Pizza";
+        game.nextChoice2 = "Neutral Pizza";
+        game.nextChoice3 = "No Pizza";
+    }
+
+    public void yesPizza() {
+        player.hp = player.hp - 5;
+        mana.playerHpLabel.setText("" + player.hp);
+
+        mana.adventureText.setText("Mage: That is incorrect!\n" +
+                "<The mage hurls a waterblast towards you and launches you into the lake.\nYou take 5 damage>\n" +
+                "Mage:Eh, because you seen the spell already...here you go.\n" +
+                "<You have recieved a Water Blast scroll!\nThe mage fades into the distance>");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        game.nextChoice1 = "Lake Three";
+    }
+    public void noPizza() {
+        mana.addManaPotion();
+
+        mana.adventureText.setText("Mage: That is correct! Here is the water spell scroll and a mana potion for your troubles" +
+                "\n<You have recieved a Water Blast scroll and a Mana Potion!>");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        game.nextChoice1 = "Lake three";
+    }
+    public void neutralPizza() {
+        mana.adventureText.setText("Mage: Please, traveler. This is a simple yes or no question....");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        game.nextChoice1 = "Lake Two";
+    }
+
+    public void lakeThree() {
+        String watchedOrHelped = "Ghost Fisherman: Hello adventurer.....you remember me dont you? That bandit ended up taking my life...AND YOU LET IT HAPPEN!\n" +
+                "<The ghost charges you!>";
+
+        if (fishermanHelped){
+            mana.clearInventory();
+            mana.addDragonBlade();
+            mana.adventureText.setText("<You are almost at the end of the lake path. The area around you starts to get misty and you hear an eerie voice" +
+                    " closing in on you.>\nGhost Fisherman: Hello adventurer...although the wounds I suffered eventually took my life I am greatful for you aid.\n" +
+                    "Please take this weapon as a token of my gratitude...it was my great grandfathers.<You recieve the Dragon Blade!!!\nRecieving the Great Dragon Blade makes you drop your whole inventory to make room>>");
+        } else {
+            mana.adventureText.setText("<You are almost at the end of the lake path. The area around you starts to get misty and you hear an eerie voice closing in on you.>" +
+                    "\n " + watchedOrHelped);
+            mana.choice1.setText(">>>");
+            mana.choice2.setVisible(false);
+            mana.choice3.setVisible(false);
+
+            if (fishermanHelped) {
+                game.nextChoice1 = "Dark Wizard";
+            } else {
+                game.nextChoice1 = "Ghost Battle";
+            }
+        }
+    }
+
+
+    /// Boss Battle
 
     public void darkWizard() {
 

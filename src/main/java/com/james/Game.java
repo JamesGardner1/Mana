@@ -6,9 +6,7 @@ import java.awt.event.ActionListener;
 public class Game {
     //Learned this from How to make a Text Adventure Game with GUI in Java P3 - Adding a function to button
     ChoiceHandler choiceHandler = new ChoiceHandler();
-    Player player = new Player();
     Mana mana = new Mana(choiceHandler);
-    ItemsDB items = new ItemsDB();
     TitleScreen titleScreen = new TitleScreen(choiceHandler);
     VisiblityManager visiblityManager = new VisiblityManager(mana, titleScreen);
     Sequence sequence = new Sequence(this, mana, titleScreen, visiblityManager);
@@ -29,7 +27,7 @@ public class Game {
         mana.clearInventory();
         sequence.defaultStats();
         sequence.setUIDefault();
-        items.createTable();
+
 
 
     }

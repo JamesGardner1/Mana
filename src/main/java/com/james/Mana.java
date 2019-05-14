@@ -79,17 +79,44 @@ public class Mana extends JFrame {
         allItemsListModel.addElement("Orb");
     }
 
-    public void addLongSword() {
-        allItemsListModel.addElement("Long Sword");
+    //Upgrades
+    public void addUpgrade1() {
+        if (allItemsListModel.contains("Sword")) {
+            allItemsListModel.addElement("Long Sword");
+            allItemsListModel.removeElement("Sword");
+        } else if (allItemsListModel.contains("Bow")) {
+            allItemsListModel.addElement("Heavy Bow");
+            allItemsListModel.removeElement("Bow");
+        } else {
+            allItemsListModel.addElement("Earth Orb");
+            allItemsListModel.removeElement("Orb");
+        }
+    }
+    public void addUpgrade2() {
+        if (allItemsListModel.contains("Sword")) {
+            allItemsListModel.addElement("Dark Blade");
+            allItemsListModel.removeElement("Sword");
+        } else if (allItemsListModel.contains("Long Sword")) {
+            allItemsListModel.addElement("Dark Blade");
+            allItemsListModel.removeElement("Long Sword");
+        } else if(allItemsListModel.contains("Bow")){
+            allItemsListModel.addElement("Dark Bow");
+            allItemsListModel.removeElement("Bow");
+        } else if(allItemsListModel.contains("Heavy Bow")){
+            allItemsListModel.addElement("Dark Bow");
+            allItemsListModel.removeElement("Heavy Bow");
+        } else if (allItemsListModel.contains("Orb")) {
+            allItemsListModel.addElement("Dark Orb");
+            allItemsListModel.removeElement("Orb");
+        } else if(allItemsListModel.contains("Earth Orb")) {
+            allItemsListModel.addElement("Dark Orb");
+            allItemsListModel.removeElement("Earth Orb");
+        }
     }
 
-    public void addDarkSword() {
-        allItemsListModel.addElement("Dark Sword");
+    public void addDragonBlade() {
+        allItemsListModel.addElement("Dragon Blade");
     }
-
-    public void addEarthOrb(){allItemsListModel.addElement("Earth Orb");}
-
-    public void addHeavyBow(){allItemsListModel.addElement("Heavy Bow");}
 
 
 
