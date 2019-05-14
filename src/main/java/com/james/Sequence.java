@@ -10,6 +10,8 @@ public class Sequence {
     Player player = new Player();
     Enemy bandit = new Enemy("Bandit", 25,5,10, 25);
     Enemy druid = new Enemy("Druid", 40, 8, 15, 40);
+    Enemy ghost = new Enemy("Ghost", 55, 10, 18, 45);
+    Enemy wizard = new Enemy("Wizard", 100, 13, 22, 100);
     Magic fireBall = new Magic("Fireball", 15,22,5);
     Magic heal = new Magic("Heal", 7, 11,5);
     Magic druidHeal  = new Magic("Druid Heal", 12, 20,10);
@@ -99,6 +101,18 @@ public class Sequence {
             case "Potion Lion": potionLion();break;
             case "Kill Lion": killLion();break;
             case "Heal Lion": healLion();break;
+
+            //Story Cases - Lake
+            case "Lake One": lakeOne();break;
+            case "Help Fisherman": helpFisherman();break;
+            case "Ignore Fisherman": forestTwo();break;
+            case "Help Bandit":helpBandit();break;
+            case "Lake Two": lakeTwo();break;
+            case "Yes Pizza": yesPizza();break;
+            case "No Pizza": noPizza();break;
+            case "Neutral Pizza":neutralPizza();break;
+            case "Lake Three": lakeThree();break;
+
             //Story cases Phase 3
             case "Dark Wizard": darkWizard();break;
 
@@ -108,21 +122,26 @@ public class Sequence {
             case "Attack Bandit" : attackBandit(); break;
             case "Bandit Attack" : banditAttack(); break;
             case "Bandit Victory": banditVictory(); break;
+            case "Bandit Fisherman Victory": banditFishermanVictory();break;
             //Druid
             case "Druid Battle": druidBattle();break;
             case "Attack Druid": attackDruid();break;
             case "Druid Attack": druidAttack();break;
             case "Druid Victory": druidVictory();break;
             //Ghost
-            case "Ghost Battle": druidBattle();break;
-            case "Attack Ghost": attackDruid();break;
-            case "Ghost Attack": druidAttack();break;
-            case "Ghost Victory": druidVictory();break;
+            case "Ghost Battle": ghostBattle();break;
+            case "Attack Ghost": attackGhost();break;
+            case "Ghost Attack": ghostAttack();break;
+            case "Ghost Victory": ghostVictory();break;
             //Dark Wizard
+            case "Wizard Battle": ghostBattle();break;
+            case "Attack Wizard": attackGhost();break;
+            case "Wizard Attack": ghostAttack();break;
+            case "Wizard Victory": ghostVictory();break;
 
             //Dead
-            case "Defeat": defeat();
-            case "Restart": restart();
+            case "Defeat": defeat();break;
+            case "Restart": restart();break;
 
 
         }
@@ -786,6 +805,9 @@ public class Sequence {
         mana.addManaPotion();
         mana.addUpgrade1();
 
+        player.baseDamage = player.baseDamage + 5;
+        player.maxDamage = player.maxDamage + 8;
+
         mana.adventureText.setText("<You decide to help the bandit and you both rob the fisherman and split his belongings.\n" +
                 "You recieve a mana potion and a weapon upgrade! You turn around and the bandit charges you.>");
         mana.choice1.setText(">>>");
@@ -819,7 +841,7 @@ public class Sequence {
         mana.adventureText.setText("Mage: That is incorrect!\n" +
                 "<The mage hurls a waterblast towards you and launches you into the lake.\nYou take 5 damage>\n" +
                 "Mage:Eh, because you seen the spell already...here you go.\n" +
-                "<You have recieved a Water Blast scroll!\nThe mage fades into the distance>");
+                "<You have received a Water Blast scroll!\nThe mage fades into the distance>");
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
@@ -853,6 +875,11 @@ public class Sequence {
         if (fishermanHelped){
             mana.clearInventory();
             mana.addDragonBlade();
+
+            player.baseDamage = player.baseDamage + 15;
+            player.maxDamage = player.maxDamage + 20;
+
+
             mana.adventureText.setText("<You are almost at the end of the lake path. The area around you starts to get misty and you hear an eerie voice" +
                     " closing in on you.>\nGhost Fisherman: Hello adventurer...although the wounds I suffered eventually took my life I am greatful for you aid.\n" +
                     "Please take this weapon as a token of my gratitude...it was my great grandfathers.<You recieve the Dragon Blade!!!\nRecieving the Great Dragon Blade makes you drop your whole inventory to make room>>");
@@ -871,11 +898,180 @@ public class Sequence {
         }
     }
 
+    //Ghost Battle
+    public void ghostBattle() {
+        mana.useItemButton.setVisible(false);
+        mana.choice2.setVisible(true);
+        mana.choice3.setVisible(true);
+
+        mana.adventureText.setText("<What to do?>\nGhost Fisherman: You shall pay!");
+        mana.choice1.setText(battleChoice1);
+        mana.choice2.setText(battleChoice2);
+        mana.choice3.setText(battleChoice3);
+
+
+        game.nextChoice1 = "Attack Druid";
+        game.nextChoice2 = "Use Magic";
+        game.nextChoice3 = "Use Item";
+
+    }
+
+    public void attackGhost() {
+        mana.useItemButton.setVisible(false);
+
+        int playerDamage = rnd.nextInt(player.maxDamage - player.baseDamage + 1) + player.baseDamage;
+
+        mana.adventureText.setText("You attacked the Ghost and dealt " + playerDamage + " damage!");
+        ghost.hp = ghost.hp - playerDamage;
+
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        if (ghost.hp > 0){
+            game.nextChoice1 = "Ghost Attack";
+        } else {
+            game.nextChoice1 = "Ghost Victory";
+        }
+    }
+
+    public void ghostAttack() {
+        mana.useItemButton.setVisible(false);
+
+        int ghostDamage = rnd.nextInt(ghost.maxDamage - ghost.baseDamage + 1) + ghost.baseDamage;
+
+        player.hp = player.hp - ghostDamage;
+        mana.playerHpLabel.setText("" + player.hp);
+
+        mana.adventureText.setText(druid.name +" deals " + ghostDamage + " to you!");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        if(player.hp > 0){
+            game.nextChoice1 = "Ghost Battle";
+        } else {
+            game.nextChoice1 = "Defeat";
+        }
+    }
+
+    public void ghostVictory(){
+        mana.useItemButton.setVisible(false);
+        mana.addPotion();
+        mana.addPotion();
+        mana.addManaPotion();
+
+
+        player.exp = player.exp + druid.expWorth;
+        mana.expLabel.setText("" + player.exp);
+
+        mana.adventureText.setText("<The Druid falls to his knees. He has been defeated.\nYou recieve a Potion!\nYou have recieved " + druid.expWorth + " experience points!");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        game.nextChoice1 = "Level Up";
+    }
+
 
     /// Boss Battle
 
     public void darkWizard() {
 
+    }
+
+    public void wizardBattle() {
+        mana.useItemButton.setVisible(false);
+        mana.choice2.setVisible(true);
+        mana.choice3.setVisible(true);
+
+        mana.adventureText.setText("<What to do?>\nGhost Fisherman: You shall pay!");
+        mana.choice1.setText(battleChoice1);
+        mana.choice2.setText(battleChoice2);
+        mana.choice3.setText(battleChoice3);
+
+
+        game.nextChoice1 = "Attack Druid";
+        game.nextChoice2 = "Use Magic";
+        game.nextChoice3 = "Use Item";
+
+    }
+
+    public void attackWizard() {
+        mana.useItemButton.setVisible(false);
+
+        int playerDamage = rnd.nextInt(player.maxDamage - player.baseDamage + 1) + player.baseDamage;
+
+        mana.adventureText.setText("You attacked the Ghost and dealt " + playerDamage + " damage!");
+        ghost.hp = ghost.hp - playerDamage;
+
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        if (ghost.hp > 0){
+            game.nextChoice1 = "Ghost Attack";
+        } else {
+            game.nextChoice1 = "Ghost Victory";
+        }
+    }
+
+    public void wizardAttack() {
+        mana.useItemButton.setVisible(false);
+
+        int ghostDamage = rnd.nextInt(ghost.maxDamage - ghost.baseDamage + 1) + ghost.baseDamage;
+
+        player.hp = player.hp - ghostDamage;
+        mana.playerHpLabel.setText("" + player.hp);
+
+        mana.adventureText.setText(druid.name +" deals " + ghostDamage + " to you!");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        if(player.hp > 0){
+            game.nextChoice1 = "Ghost Battle";
+        } else {
+            game.nextChoice1 = "Defeat";
+        }
+    }
+
+    public void wizardSpecialAttack() {
+        mana.useItemButton.setVisible(false);
+
+        int ghostDamage = rnd.nextInt(ghost.maxDamage - ghost.baseDamage + 1) + ghost.baseDamage;
+
+        player.hp = player.hp - ghostDamage;
+        mana.playerHpLabel.setText("" + player.hp);
+
+        mana.adventureText.setText(druid.name +" deals " + ghostDamage + " to you!");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        if(player.hp > 0){
+            game.nextChoice1 = "Ghost Battle";
+        } else {
+            game.nextChoice1 = "Defeat";
+        }
+    }
+
+    public void wizardVictory(){
+        mana.useItemButton.setVisible(false);
+        mana.addPotion();
+        mana.addPotion();
+        mana.addManaPotion();
+
+
+        player.exp = player.exp + druid.expWorth;
+        mana.expLabel.setText("" + player.exp);
+
+        mana.adventureText.setText("<The Druid falls to his knees. He has been defeated.\nYou recieve a Potion!\nYou have recieved " + druid.expWorth + " experience points!");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        game.nextChoice1 = "Level Up";
     }
 
     public void defeat(){
