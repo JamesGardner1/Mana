@@ -35,23 +35,18 @@ public class KarmaDB {
         }
     }
 
-    public void goodTraveler() {
+    public void addKarma(String name, String description, String face) {
         try (Connection connection = DriverManager.getConnection(DB_CONNECTION_URL);
              PreparedStatement preparedStatement = connection.prepareStatement(ADD_EVENT)) {
 
-            preparedStatement.setString(1, "Helped Traveler");
-            preparedStatement.setString(2, "Helped Traveler from under rock");
-            preparedStatement.setString(3, "Good");
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, description);
+            preparedStatement.setString(3, face);
 
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-
-            if (e.getMessage().contains("(error)")) {
-                //ignore, table already exists.
-            } else {
-                throw new RuntimeException(e);
-            }
+            throw new RuntimeException(e);
         }
     }
 

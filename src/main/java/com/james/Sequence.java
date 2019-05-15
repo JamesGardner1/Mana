@@ -738,7 +738,7 @@ public class Sequence {
 
     public void helpTraveler() {
         travelerUnderRock = false;
-//        karma.goodTraveler();
+        karma.addKarma("Helped Traveler","Helped Traveler", "Good");
 //        generateKarma.raiseKarma();
 
         mana.addPotion();
