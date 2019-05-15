@@ -17,12 +17,12 @@ public class Sequence {
     Enemy bandit = new Enemy("Bandit", 25, 5, 10, 25);
     Enemy druid = new Enemy("Druid", 40, 8, 15, 40);
     Enemy ghost = new Enemy("Ghost", 55, 10, 18, 45);
-    Enemy wizard = new Enemy("Wizard", 100, 13, 22, 100);
+    Enemy wizard = new Enemy("Wizard", 75, 13, 22, 100);
     Magic fireBall = new Magic("Fireball", 15, 25, 5);
     Magic heal = new Magic("Heal", 10, 18, 5);
-    Magic druidHeal = new Magic("Druid Heal", 15, 25, 10);
+    Magic druidHeal = new Magic("Druid Heal", 18, 30, 10);
     Magic waterBlast = new Magic("Water Blast", 21, 30,10);
-    Item potion = new Item("Potion", 25);
+    Item potion = new Item("Potion", 30);
     Item sword = new Item("Sword", 5);
     Item bow = new Item("Bow", 5);
     Item orb = new Item("Orb", 5);
@@ -212,7 +212,7 @@ public class Sequence {
 
         if (player.exp == 0 && player.lvl == 1) {
             game.nextChoice1 = "First Battle!";
-        } else if (player.exp >= 25 && travelerUnderRock) {
+        } else if (player.exp >= 25 && travelerUnderRock && !lakePath) {
             game.nextChoice1 = "Druid Battle";
         } else if (player.exp >= 25 && lakePath && ghostStillExists) {
             game.nextChoice1 = "Bandit River Battle";
@@ -234,7 +234,7 @@ public class Sequence {
             }
             mana.playerHpLabel.setText("" + player.hp);
 
-            mana.adventureText.setText("You have gained 25 health.");
+            mana.adventureText.setText("You have gained 30 health.");
 
             mana.choice1.setText(">>>");
             mana.choice2.setVisible(false);
@@ -242,14 +242,14 @@ public class Sequence {
 
             mana.useItemButton.setVisible(false);
 
-            if (player.exp == 0 || lakePath) {
+            if (lakePath && ghostStillExists && !finalBattle) {
                 game.nextChoice1 = "Bandit Attack";
-            } else if (player.exp >= 25 && travelerUnderRock) {
+            } else if (player.exp >= 25 && travelerUnderRock && !lakePath) {
                 game.nextChoice1 = "Druid Attack";
-            } else if (player.exp >= 40 && lakePath) {
+            } else if (player.exp >= 25 && lakePath && !ghostStillExists) {
                 game.nextChoice1 = "Ghost Attack";
             } else {
-                game.nextChoice1 = "Wizard Attack!";
+                game.nextChoice1 = "Wizard Attack";
             }
         }
 
@@ -321,7 +321,7 @@ public class Sequence {
     public void fire() {
         mana.useItemButton.setVisible(false);
             int magicDamage = rnd.nextInt(fireBall.maxDamage - fireBall.baseDamage + 1) + fireBall.baseDamage;
-            if (player.exp == 25 && lakePath) {
+            if (player.exp == 25 && lakePath && ghostStillExists && player.mana >= 5) {
                 mana.adventureText.setText("You hurl a fireball at the " + bandit.name + " and dealt " + magicDamage + " damage!");
                 bandit.hp = bandit.hp - magicDamage;
 
@@ -337,7 +337,7 @@ public class Sequence {
             } else {
                 game.nextChoice1 = "Bandit Fisherman Victory";
             }
-        } else if (player.exp == 25 && !lakePath) {
+        } else if (player.exp == 25 && !lakePath  && player.mana >= 5) {
 
             mana.adventureText.setText("You hurl a fireball at the " + druid.name + " and dealt " + magicDamage + " damage!");
         druid.hp = druid.hp - magicDamage;
@@ -356,7 +356,7 @@ public class Sequence {
         }
 
 
-    } else if (player.exp > 40 && lakePath && !finalBattle) {
+    } else if (!ghostStillExists && lakePath && !finalBattle  && player.mana >= 5) {
                 mana.adventureText.setText("You hurl a fireball at the " + ghost.name + " and dealt " + magicDamage + " damage!");
                 ghost.hp = ghost.hp - magicDamage;
 
@@ -372,7 +372,7 @@ public class Sequence {
                 } else {
                     game.nextChoice1 = "Ghost Victory";
                 }
-            } else {
+            } else if (finalBattle  && player.mana >= 5){
                 mana.adventureText.setText("You hurl a fireball at the Dark Wizard and dealt " + magicDamage + " damage!");
                 wizard.hp = wizard.hp - magicDamage;
 
@@ -383,7 +383,7 @@ public class Sequence {
                 mana.choice2.setVisible(false);
                 mana.choice3.setVisible(false);
 
-                if (ghost.hp > 0){
+                if (wizard.hp > 0){
                     game.nextChoice1 = "Wizard Attack";
                 } else {
                     game.nextChoice1 = "Wizard Victory";
@@ -1171,7 +1171,7 @@ public class Sequence {
         player.hp = player.hp - ghostDamage;
         mana.playerHpLabel.setText("" + player.hp);
 
-        mana.adventureText.setText(druid.name +" deals " + ghostDamage + " to you!");
+        mana.adventureText.setText("The Ghost deals " + ghostDamage + " to you!");
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
@@ -1285,7 +1285,7 @@ public class Sequence {
     public void wizardSpecialAttack() {
         mana.useItemButton.setVisible(false);
 
-        int wizardDamage = rnd.nextInt(wizard.maxDamage - wizard.baseDamage + 10) + wizard.baseDamage;
+        int wizardDamage = rnd.nextInt(wizard.maxDamage - wizard.baseDamage + 5) + wizard.baseDamage;
 
         player.hp = player.hp - wizardDamage;
         mana.playerHpLabel.setText("" + player.hp);
@@ -1377,6 +1377,7 @@ public class Sequence {
 
         defaultStats();
         setUIDefault();
+        mana.clearInventory();
         visiblityManager.showTitleScreen();
 
     }
