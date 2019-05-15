@@ -1061,7 +1061,7 @@ public class Sequence {
         mana.choice2.setVisible(true);
         mana.choice3.setVisible(true);
 
-        mana.adventureText.setText("<You continue you down the lake path and a hooded mystical man approaches you.>\n" +
+        mana.adventureText.setText("<You continue down the lake path and a hooded mystical man approaches you.>\n" +
                 "Mage: Hmmm...I sense a great power within you, adventurer. One you have not the littlest clue about\n" +
                 "If you answer this correctly you will be worthy of this scroll:\nDoes pineapple belong on pizza?");
         mana.choice1.setText("Yes");
