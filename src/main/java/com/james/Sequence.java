@@ -1074,7 +1074,7 @@ public class Sequence {
     }
 
     public void yesPizza() {
-        karma.addKarma("Pinneapple","Gross", "Bad");
+        karma.addKarma("Pineapple","Gross", "Bad");
         generateKarma.lowerKarma();
 
         player.hp = player.hp - 5;
@@ -1092,12 +1092,12 @@ public class Sequence {
         game.nextChoice1 = "Lake Three";
     }
     public void noPizza() {
-        karma.addKarma("No Pinneapple","Most Moral decision of the game", "Good");
+        karma.addKarma("No Pineapple","Most Moral decision of the game", "Good");
         generateKarma.raiseKarma();
         mana.addManaPotion();
 
         mana.adventureText.setText("Mage: That is correct! Here is the water spell scroll and a mana potion for your troubles" +
-                "\n<You have recieved a Water Blast scroll and a Mana Potion!>");
+                "\n<You have received a Water Blast scroll and a Mana Potion!>");
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
@@ -1129,7 +1129,7 @@ public class Sequence {
 
             mana.adventureText.setText("<You are almost at the end of the lake path. The area around you starts to get misty and you hear an eerie voice" +
                     " closing in on you.>\nGhost Fisherman: Hello adventurer...although the wounds I suffered eventually took my life I am greatful for you aid.\n" +
-                    "Please take this weapon as a token of my gratitude...it was my great grandfathers.<You recieve the Dragon Blade!!!\nRecieving the Great Dragon Blade makes you drop your whole inventory to make room>>");
+                    "Please take this weapon as a token of my gratitude...it was my great grandfathers.<You receive the Dragon Blade!!!\nReceiving the Great Dragon Blade makes you drop your whole inventory to make room>>");
             mana.choice1.setText(">>>");
             mana.choice2.setVisible(false);
             mana.choice3.setVisible(false);
