@@ -1389,7 +1389,7 @@ public class Sequence {
     }
 
     public void showKarma() {
-        visiblityManager.endGame();
+        generateKarma.setVisible(true);
     }
 
     public void defeat(){
