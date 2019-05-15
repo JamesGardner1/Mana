@@ -1,9 +1,6 @@
 package com.james;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+
 import java.util.Random;
 
 public class Sequence {
@@ -11,8 +8,8 @@ public class Sequence {
     Mana mana;
     TitleScreen titleScreen;
     VisiblityManager visiblityManager;
-    KarmaDB karma;
-    KarmaGUI generateKarma;
+    KarmaDB karma = new KarmaDB();
+    KarmaGUI generateKarma = new KarmaGUI(karma);
     Player player = new Player();
     Enemy bandit = new Enemy("Bandit", 25, 5, 10, 25);
     Enemy druid = new Enemy("Druid", 40, 8, 15, 40);
@@ -48,13 +45,11 @@ public class Sequence {
     String battleChoice2 = "Use Magic";
     String battleChoice3 = "Use Item";
 
-    public Sequence(Game gameStory, Mana manaStory, TitleScreen titleStory, VisiblityManager visibiltyStory, KarmaDB karmaStory, KarmaGUI karmaGenerator) {
+    public Sequence(Game gameStory, Mana manaStory, TitleScreen titleStory, VisiblityManager visibiltyStory) {
         game = gameStory;
         mana = manaStory;
         titleScreen = titleStory;
         visiblityManager = visibiltyStory;
-        karma = karmaStory;
-        generateKarma = karmaGenerator;
     }
 
     public void defaultStats() {
@@ -68,11 +63,15 @@ public class Sequence {
     }
 
     public void setUIDefault() {
-        //Set the player Stats
+        //Set the player Stats and UI
         mana.levelLabel.setText("" + player.lvl);
         mana.playerHpLabel.setText("" + player.hp);
+        mana.healthBar.setValue(player.hp);
+        mana.healthBar.setMaximum(50);
         mana.manaLabel.setText("" + player.mana);
+        mana.manaBar.setValue(player.mana);
         mana.expLabel.setText("" + player.exp);
+
 
     }
 
@@ -183,7 +182,9 @@ public class Sequence {
         player.exp = 0;
         player.hp = 75;
         mana.playerHpLabel.setText("" + player.hp);
+        mana.healthBar.setValue(player.hp);
         player.maxHp = 75;
+        mana.healthBar.setMaximum(player.maxHp);
         player.mana = 40;
         mana.manaLabel.setText("" + player.mana);
         player.baseDamage = 8;
@@ -224,7 +225,7 @@ public class Sequence {
     }
 
     public void itemEffect() {
-        // Use potion
+        // Use potions help from StackOverflow
         if (mana.inventoryList.getSelectedValue() == "Potion") {
             player.hp = player.hp + potion.effect;
 
@@ -233,7 +234,7 @@ public class Sequence {
                 player.hp = player.maxHp;
             }
             mana.playerHpLabel.setText("" + player.hp);
-
+            mana.healthBar.setValue(player.hp);
             mana.adventureText.setText("You have gained 30 health.");
 
             mana.choice1.setText(">>>");
@@ -255,8 +256,9 @@ public class Sequence {
 
         if (mana.inventoryList.getSelectedValue() == "Mana Potion") {
             player.mana = player.mana + potion.effect;
-            mana.playerHpLabel.setText("" + player.hp);
 
+
+            mana.manaLabel.setText("" + player.mana);
             mana.adventureText.setText("You have gained 25 mana points.");
 
             mana.choice1.setText(">>>");
@@ -402,9 +404,11 @@ public class Sequence {
             player.hp = player.maxHp;
         }
         mana.playerHpLabel.setText("" + player.hp);
+        mana.healthBar.setValue(player.hp);
 
         player.mana = player.mana - heal.manaCost;
         mana.manaLabel.setText("" + player.mana);
+        mana.manaBar.setValue(player.mana);
 
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
@@ -434,9 +438,11 @@ public class Sequence {
             player.hp = player.maxHp;
         }
         mana.playerHpLabel.setText("" + player.hp);
+        mana.healthBar.setValue(player.hp);
 
         player.mana = player.mana - druidHeal.manaCost;
         mana.manaLabel.setText("" + player.mana);
+        mana.manaBar.setValue(player.mana);
 
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
@@ -458,6 +464,8 @@ public class Sequence {
 
             player.mana = player.mana - waterBlast.manaCost;
             mana.manaLabel.setText("" + player.mana);
+            mana.manaBar.setValue(player.mana);
+
 
             mana.choice1.setText(">>>");
             mana.choice2.setVisible(false);
@@ -474,6 +482,7 @@ public class Sequence {
 
             player.mana = player.mana - waterBlast.manaCost;
             mana.manaLabel.setText("" + player.mana);
+            mana.manaBar.setValue(player.mana);
 
             mana.choice1.setText(">>>");
             mana.choice2.setVisible(false);
@@ -519,6 +528,7 @@ public class Sequence {
     }
 
     public void selectWeapon() {
+        bandit.hp = 25;
         mana.adventureText.setText("<In the chest you see 3 items: A sword, a bow, and a orb>\n Mysterious Voice: We..Or I should say you don't have all day. Choooosseeee Yoooouuuuurrr Weeeeaaappppooonn!");
         mana.choice1.setText("Pick up the sword");
         mana.choice2.setVisible(true);
@@ -591,7 +601,7 @@ public class Sequence {
         mana.choice2.setVisible(true);
         mana.choice3.setVisible(true);
 
-        mana.adventureText.setText("Looks like you are going to have to use it!\n A bandit charges you!");
+        mana.adventureText.setText("Mysterious Voice: Looks like you are going to have to use it!\n <A bandit charges you!>");
         mana.choice1.setText(battleChoice1);
         mana.choice2.setText(battleChoice2);
         mana.choice3.setText(battleChoice3);
@@ -690,6 +700,7 @@ public class Sequence {
 
         player.hp = player.hp - 5;
         mana.playerHpLabel.setText("" + player.hp);
+        mana.healthBar.setValue(player.hp);
 
         mana.adventureText.setText("Mysterious Voice: Ha! I doubt it!\n<You feel an agonizing pain in your head.\nYou take 5 damage!>\nMysterious Voice: Lets try that again..");
         mana.choice1.setText(">>>");
@@ -707,7 +718,7 @@ public class Sequence {
     public void twoPaths() {
         mana.choice2.setVisible(true);
 
-        mana.adventureText.setText("Mysterious Voice: Oh, dont be so dramatic! That was your first test. Now you see that building in near the mountains? Go there for your second trial" +
+        mana.adventureText.setText("Mysterious Voice: Oh, dont be so dramatic! That was your first test. Now you see that building near the mountains? Go there for your second trial" +
                 "<You see a stone building in the distance. Two paths lead to it: Forest Path and Lake Path");
         mana.choice1.setText("Take Forest Path");
         mana.choice2.setText("Take Lake Path");
@@ -739,7 +750,7 @@ public class Sequence {
     public void helpTraveler() {
         travelerUnderRock = false;
         karma.addKarma("Helped Traveler","Helped Traveler", "Good");
-//        generateKarma.raiseKarma();
+        generateKarma.raiseKarma();
 
         mana.addPotion();
         mana.addPotion();
@@ -750,6 +761,7 @@ public class Sequence {
 
         player.hp = player.hp - 5;
         mana.playerHpLabel.setText("" + player.hp);
+        mana.healthBar.setValue(player.hp);
 
         mana.adventureText.setText("<You push against the boulder, helping the traveler out from under it.\n" + "" +
                 "The effort causes you to smash your hand>\n<You take 5 Damage>\nTraveler: Thank you so much! Please take this\n<You receive 2 Potions and a weapon upgrade!\n" +
@@ -766,7 +778,7 @@ public class Sequence {
     }
 
     public void robTraveler() {
-//        karma.badTraveler();
+        karma.addKarma("Robbed Traveler","You robbed the traveler", "Bad");
 //        generateKarma.lowerKarma();
 
         mana.addPotion();
@@ -786,9 +798,10 @@ public class Sequence {
 
 
     public void forestTwo() {
-        String fightOrSpell = "Druid: You have shown no regard for human life! You must pay!\n<Druid charges you!";
+        String fightOrSpell = "Druid: You have shown no regard for human life! You must pay!\n<Druid charges you!>";
 
         if (travelerUnderRock){
+            druid.hp = 40;
             mana.adventureText.setText("<You descend farther ino the woods. You spot a lion walking towards you\nThe lion shifts into a"
                     + " man with tribal tattoos all over his body>\nDruid: Hello, human. I am a druid, a protector of the woods and all life that inhabit it.\n" + fightOrSpell);
         } else {
@@ -902,7 +915,7 @@ public class Sequence {
     }
 
     public void potionLion() {
-//        karma.goodLion();
+        karma.addKarma("Helped Lion","Gave lion a potion", "Good");
 //        generateKarma.raiseKarma();
 
         mana.addPotion();
@@ -921,7 +934,7 @@ public class Sequence {
     }
 
     public void killLion() {
-//        karma.badLion();
+        karma.addKarma("Killed Lion","Killed the wounded lion", "Bad");
 //        generateKarma.lowerKarma();
 
         mana.addPotion();
@@ -937,7 +950,7 @@ public class Sequence {
     }
 
     public void healLion() {
-//        karma.goodLion();
+        karma.addKarma("Helped Lion","Casted a healing spell on the lion", "Good");
 //        generateKarma.raiseKarma();
 
         mana.addPotion();
@@ -975,7 +988,7 @@ public class Sequence {
 
     public void helpFisherman() {
         bandit.hp = 25;
-//        karma.goodFisherman();
+        karma.addKarma("Helped Fisherman","Helped fisherman from getting robbed from bandit", "Good");
 //        generateKarma.raiseKarma();
 
         fishermanHelped = true;
@@ -988,6 +1001,7 @@ public class Sequence {
     }
 
     public void helpBandit() {
+        karma.addKarma("Helped Bandit","Helped Bandit rob the traveler", "Bad");
         bandit.hp = 25;
         mana.addManaPotion();
         mana.addUpgrade1();
@@ -1007,6 +1021,8 @@ public class Sequence {
         game.nextChoice1 = "Bandit River Battle";
     }
 
+    ///River Bandit Battle
+
     public void banditRiverBattle() {
         mana.useItemButton.setVisible(false);
         mana.choice2.setVisible(true);
@@ -1023,6 +1039,7 @@ public class Sequence {
         game.nextChoice3 = "Use Item";
 
     }
+
 
     public void banditFishermanVictory() {
         mana.addPotion();
@@ -1057,8 +1074,12 @@ public class Sequence {
     }
 
     public void yesPizza() {
+        karma.addKarma("Pinneapple","Gross", "Bad");
+        generateKarma.lowerKarma();
+
         player.hp = player.hp - 5;
         mana.playerHpLabel.setText("" + player.hp);
+        mana.healthBar.setValue(player.hp);
 
         mana.adventureText.setText("Mage: That is incorrect!\n" +
                 "<The mage hurls a waterblast towards you and launches you into the lake.\nYou take 5 damage>\n" +
@@ -1071,6 +1092,8 @@ public class Sequence {
         game.nextChoice1 = "Lake Three";
     }
     public void noPizza() {
+        karma.addKarma("No Pinneapple","Most Moral decision of the game", "Good");
+        generateKarma.raiseKarma();
         mana.addManaPotion();
 
         mana.adventureText.setText("Mage: That is correct! Here is the water spell scroll and a mana potion for your troubles" +
@@ -1120,6 +1143,7 @@ public class Sequence {
             mana.choice1.setText(">>>");
             mana.choice2.setVisible(false);
             mana.choice3.setVisible(false);
+            ghost.hp = 55;
 
             game.nextChoice1 = "Ghost Battle";
 
@@ -1128,6 +1152,7 @@ public class Sequence {
 
     //Ghost Battle
     public void ghostBattle() {
+
         mana.useItemButton.setVisible(false);
         mana.choice2.setVisible(true);
         mana.choice3.setVisible(true);
@@ -1216,6 +1241,7 @@ public class Sequence {
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
+        wizard.hp = 75;
 
         game.nextChoice1 = "Wizard Battle";
 
@@ -1321,6 +1347,9 @@ public class Sequence {
     }
 
     public void killWizard() {
+        karma.addKarma("Killed Wizard","Took the Dark Wizards life", "Bad");
+        generateKarma.lowerKarma();
+
         player.exp = player.exp + wizard.expWorth;
         mana.expLabel.setText("" + player.exp);
 
@@ -1333,6 +1362,9 @@ public class Sequence {
     }
 
     public void spareWizard() {
+        karma.addKarma("Spared Wizard","Spared the WIzards life", "Good");
+        generateKarma.raiseKarma();
+
         player.exp = player.exp + wizard.expWorth;
         mana.expLabel.setText("" + player.exp);
 

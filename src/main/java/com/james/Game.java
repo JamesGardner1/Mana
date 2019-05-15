@@ -11,15 +11,13 @@ public class Game {
     KarmaDB karma;
     KarmaGUI karmaGenerator;
     VisiblityManager visiblityManager = new VisiblityManager(mana, titleScreen, karmaGenerator);
-    Sequence sequence = new Sequence(this, mana, titleScreen, visiblityManager, karma, karmaGenerator);
+    Sequence sequence = new Sequence(this, mana, titleScreen, visiblityManager);
 
     String nextChoice1, nextChoice2, nextChoice3, nextChoice4;
 
     public static void main(String[] args) {
 
       new Game();
-      KarmaDB db = new KarmaDB();
-      KarmaGUI gui = new KarmaGUI(db);
 
 	// write your code here
     }

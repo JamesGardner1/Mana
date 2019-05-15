@@ -78,6 +78,8 @@
           <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-65794"/>
+          <foreground color="-12287946"/>
           <maximum value="40"/>
           <value value="0"/>
         </properties>
@@ -198,6 +200,25 @@
           <font name="Broadway" size="16" style="1"/>
           <foreground color="-131587"/>
           <text value="Use"/>
+        </properties>
+      </component>
+      <component id="8150d" class="javax.swing.JProgressBar" binding="healthBar">
+        <constraints>
+          <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-65794"/>
+          <foreground color="-3260616"/>
+        </properties>
+      </component>
+      <component id="37572" class="javax.swing.JProgressBar" binding="manaBar">
+        <constraints>
+          <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-65794"/>
+          <borderPainted value="true"/>
+          <foreground color="-15697792"/>
         </properties>
       </component>
     </children>

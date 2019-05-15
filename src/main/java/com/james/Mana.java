@@ -18,6 +18,8 @@ public class Mana extends JFrame {
     JLabel manaLabel;
     JList<String> inventoryList;
     JButton useItemButton;
+    JProgressBar healthBar;
+    JProgressBar manaBar;
 
 
     DefaultListModel<String> allItemsListModel;
@@ -87,6 +89,8 @@ public class Mana extends JFrame {
             allItemsListModel.removeElement("Orb");
         }
     }
+
+    //Level 2 Upgrades
     public void addUpgrade2() {
         if (allItemsListModel.contains("Sword")) {
             allItemsListModel.addElement("Dark Blade");
@@ -122,11 +126,13 @@ public class Mana extends JFrame {
 
                 int selectedIndex = inventoryList.getSelectedIndex();
 
-
-                if (selectedIndex != -1) {
-                    allItemsListModel.remove(selectedIndex);
-                }else{
+                if (inventoryList.getSelectedValue() == "Potion" || inventoryList.getSelectedValue() == "Mana Potion") {
+                    if (selectedIndex != -1) {
+                        allItemsListModel.remove(selectedIndex);
+                    }else{
                     JOptionPane.showMessageDialog(Mana.this, "Please select an item to use.");
+                } } else {
+                    JOptionPane.showMessageDialog(Mana.this,"Sorry, you are kinda already using this...");
                 }
 
 
