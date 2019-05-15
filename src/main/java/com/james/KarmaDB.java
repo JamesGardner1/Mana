@@ -5,18 +5,20 @@ import java.util.Vector;
 
 public class KarmaDB {
 
-    private static final String DB_CONNECTION_URL = "jdbc:sqlite:karma.sqlite";
+    String DB_CONNECTION_URL = "jdbc:sqlite:karma.sqlite";
 
     // SQL statements
-    private static final String CREATE_KARMA_TABLE = "CREATE TABLE karma (event INTEGER PRIMARY KEY , name TEXT, description TEXT, face TEXT)";
-    private static final String GET_KARMA = "SELECT * FROM karma";
+    String CREATE_KARMA_TABLE = "CREATE TABLE karma (event INTEGER PRIMARY KEY , name TEXT, description TEXT, face TEXT)";
+    String GET_KARMA = "SELECT * FROM karma";
+    private static final String ADD_EVENT = "INSERT INTO karma (name, description, face) VALUES (?, ?, ?) ";
+
 
 
     KarmaDB() {
         createTable();
     }
 
-    private void createTable() {
+    public void createTable() {
 
         try (Connection connection = DriverManager.getConnection(DB_CONNECTION_URL);
              Statement statement = connection.createStatement()) {
@@ -35,9 +37,13 @@ public class KarmaDB {
 
     public void goodTraveler() {
         try (Connection connection = DriverManager.getConnection(DB_CONNECTION_URL);
-             Statement statement = connection.createStatement()) {
+             PreparedStatement preparedStatement = connection.prepareStatement(ADD_EVENT)) {
 
-            statement.executeUpdate("INSERT INTO karma (name, description, face) VALUES ('Helped Traveler', 'Helped the traveler get out from under the boulder','Good')");
+            preparedStatement.setString(1, "Helped Traveler");
+            preparedStatement.setString(2, "Helped Traveler from under rock");
+            preparedStatement.setString(3, "Good");
+
+            preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
 

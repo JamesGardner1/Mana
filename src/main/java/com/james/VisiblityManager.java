@@ -6,10 +6,10 @@ public class VisiblityManager {
     TitleScreen titleScreen;
     KarmaGUI karma;
 
-    public VisiblityManager(Mana manaScreen, TitleScreen tScreen, KarmaGUI kTable){
+    public VisiblityManager(Mana manaScreen, TitleScreen tScreen, KarmaGUI karmaGenerator){
         mana = manaScreen;
         titleScreen = tScreen;
-        karma = kTable;
+        karma = karmaGenerator;
     }
 
     public void showTitleScreen(){

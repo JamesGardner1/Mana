@@ -8,16 +8,18 @@ public class Game {
     ChoiceHandler choiceHandler = new ChoiceHandler();
     Mana mana = new Mana(choiceHandler);
     TitleScreen titleScreen = new TitleScreen(choiceHandler);
-    KarmaGUI karma;
-    VisiblityManager visiblityManager = new VisiblityManager(mana, titleScreen, karma);
-    Sequence sequence = new Sequence(this, mana, titleScreen, visiblityManager);
+    KarmaDB karma;
+    KarmaGUI karmaGenerator;
+    VisiblityManager visiblityManager = new VisiblityManager(mana, titleScreen, karmaGenerator);
+    Sequence sequence = new Sequence(this, mana, titleScreen, visiblityManager, karma, karmaGenerator);
 
     String nextChoice1, nextChoice2, nextChoice3, nextChoice4;
 
     public static void main(String[] args) {
 
       new Game();
-
+      KarmaDB db = new KarmaDB();
+      KarmaGUI gui = new KarmaGUI(db);
 
 	// write your code here
     }
@@ -28,7 +30,6 @@ public class Game {
         mana.clearInventory();
         sequence.defaultStats();
         sequence.setUIDefault();
-
     }
 
     public class ChoiceHandler implements ActionListener{

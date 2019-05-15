@@ -19,11 +19,6 @@ public class Mana extends JFrame {
     JList<String> inventoryList;
     JButton useItemButton;
 
-    Item item;
-    Player player;
-    Game game;
-
-
 
     DefaultListModel<String> allItemsListModel;
 

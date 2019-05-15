@@ -1,5 +1,9 @@
 package com.james;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Random;
 
 public class Sequence {
@@ -8,6 +12,7 @@ public class Sequence {
     TitleScreen titleScreen;
     VisiblityManager visiblityManager;
     KarmaDB karma;
+    KarmaGUI generateKarma;
     Player player = new Player();
     Enemy bandit = new Enemy("Bandit", 25, 5, 10, 25);
     Enemy druid = new Enemy("Druid", 40, 8, 15, 40);
@@ -16,6 +21,7 @@ public class Sequence {
     Magic fireBall = new Magic("Fireball", 15, 22, 5);
     Magic heal = new Magic("Heal", 7, 11, 5);
     Magic druidHeal = new Magic("Druid Heal", 12, 20, 10);
+    Magic waterBlast = new Magic("Water Blast", 15, 22,5);
     Item potion = new Item("Potion", 25);
     Item sword = new Item("Sword", 5);
     Item bow = new Item("Bow", 5);
@@ -40,11 +46,13 @@ public class Sequence {
     String battleChoice2 = "Use Magic";
     String battleChoice3 = "Use Item";
 
-    public Sequence(Game gameStory, Mana manaStory, TitleScreen titleStory, VisiblityManager visibiltyStory) {
+    public Sequence(Game gameStory, Mana manaStory, TitleScreen titleStory, VisiblityManager visibiltyStory, KarmaDB karmaStory, KarmaGUI karmaGenerator) {
         game = gameStory;
         mana = manaStory;
         titleScreen = titleStory;
         visiblityManager = visibiltyStory;
+        karma = karmaStory;
+        generateKarma = karmaGenerator;
     }
 
     public void defaultStats() {
@@ -289,7 +297,7 @@ public class Sequence {
                 mana.choice2.setText("Druid Heal Mana Cost: 10");
                 game.nextChoice2 = "Druid Heal";
             } else { mana.choice2.setText("Heal Mana Cost: 5");
-            game.nextChoice2 = "Heal"}
+            game.nextChoice2 = "Heal";}
             mana.choice3.setText("Water Blast Mana Cost: 5");
 
                 game.nextChoice1 = "Fire";
@@ -355,6 +363,22 @@ public class Sequence {
                 } else {
                     game.nextChoice1 = "Ghost Victory";
                 }
+            } else {
+                mana.adventureText.setText("You hurl a fireball at the Dark Wizard and dealt " + magicDamage + " damage!");
+                wizard.hp = wizard.hp - magicDamage;
+
+                player.mana = player.mana - fireBall.manaCost;
+                mana.manaLabel.setText("" + player.mana);
+
+                mana.choice1.setText(">>>");
+                mana.choice2.setVisible(false);
+                mana.choice3.setVisible(false);
+
+                if (ghost.hp > 0){
+                    game.nextChoice1 = "Wizard Attack";
+                } else {
+                    game.nextChoice1 = "Wizard Victory";
+                }
             }
     }
 
@@ -377,11 +401,15 @@ public class Sequence {
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
 
-//        if (druid.hp > 0){
-//            game.nextChoice1 = "Druid Attack";
-//        } else {
-//            game.nextChoice1 = "Druid Victory";
-//        }
+        if (!lakePath && player.lvl < 2) {
+            game.nextChoice1 = "Druid Attack";
+        } else if (lakePath && player.lvl < 2) {
+            game.nextChoice1 = "Bandit Attack";
+        } else if (lakePath && player.exp < 90) {
+            game.nextChoice1 = "Ghost Attack";
+        } else {
+            game.nextChoice1 = "Wizard Attack";
+        }
 
 
     }
@@ -405,9 +433,50 @@ public class Sequence {
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
 
+
+        game.nextChoice1 = "Wizard Attack";
+
+
+
     }
 
-    public void water() {}
+    public void water() {
+        mana.useItemButton.setVisible(false);
+        int magicDamage = rnd.nextInt(waterBlast.maxDamage - waterBlast.baseDamage + 1) + waterBlast.baseDamage;
+       if (player.exp > 40 && lakePath) {
+            mana.adventureText.setText("You hurl a waterblast at the " + ghost.name + " and dealt " + magicDamage + " damage!");
+            ghost.hp = ghost.hp - magicDamage;
+
+            player.mana = player.mana - waterBlast.manaCost;
+            mana.manaLabel.setText("" + player.mana);
+
+            mana.choice1.setText(">>>");
+            mana.choice2.setVisible(false);
+            mana.choice3.setVisible(false);
+
+            if (ghost.hp > 0){
+                game.nextChoice1 = "Ghost Attack";
+            } else {
+                game.nextChoice1 = "Ghost Victory";
+            }
+        } else {
+            mana.adventureText.setText("You hurl a water blast at the Dark Wizard and dealt " + magicDamage + " damage!");
+            wizard.hp = wizard.hp - magicDamage;
+
+            player.mana = player.mana - waterBlast.manaCost;
+            mana.manaLabel.setText("" + player.mana);
+
+            mana.choice1.setText(">>>");
+            mana.choice2.setVisible(false);
+            mana.choice3.setVisible(false);
+
+            if (wizard.hp > 0){
+                game.nextChoice1 = "Wizard Attack";
+            } else {
+                game.nextChoice1 = "Wizard Victory";
+            }
+        }
+    }
     //Story
 
     public void awaken() {
@@ -421,6 +490,7 @@ public class Sequence {
     }
 
     public void whoAreYou() {
+        defaultStats();
         mana.adventureText.setText("Mysterious Voice: That doesnt matter....yet. I just hope the GrandMaster was right about you");
         mana.choice1.setText("GrandMaster?");
         mana.choice2.setVisible(false);
@@ -642,9 +712,12 @@ public class Sequence {
         game.nextChoice3 = "Rob Traveler";
     }
 
+
+
     public void helpTraveler() {
         travelerUnderRock = false;
-        karma.goodTraveler();
+//        karma.goodTraveler();
+        generateKarma.raiseKarma();
 
         mana.addPotion();
         mana.addPotion();
@@ -671,6 +744,9 @@ public class Sequence {
     }
 
     public void robTraveler() {
+//        karma.badTraveler();
+        generateKarma.lowerKarma();
+
         mana.addPotion();
         mana.addUpgrade2();
 
@@ -804,6 +880,9 @@ public class Sequence {
     }
 
     public void potionLion() {
+        karma.goodLion();
+        generateKarma.raiseKarma();
+
         mana.addPotion();
         mana.addManaPotion();
 
@@ -820,6 +899,9 @@ public class Sequence {
     }
 
     public void killLion() {
+//        karma.badLion();
+        generateKarma.lowerKarma();
+
         mana.addPotion();
         mana.addManaPotion();
 
@@ -833,6 +915,9 @@ public class Sequence {
     }
 
     public void healLion() {
+        karma.goodLion();
+        generateKarma.raiseKarma();
+
         mana.addPotion();
         mana.addManaPotion();
         druidHealing = true;
@@ -867,6 +952,10 @@ public class Sequence {
     }
 
     public void helpFisherman() {
+        bandit.hp = 25;
+//        karma.goodFisherman();
+        generateKarma.raiseKarma();
+
         fishermanHelped = true;
         mana.adventureText.setText("<You come to the aid of the fisherman. The bandit charges you!>");
         mana.choice1.setText(">>>");
@@ -877,8 +966,12 @@ public class Sequence {
     }
 
     public void helpBandit() {
+        bandit.hp = 25;
         mana.addManaPotion();
         mana.addUpgrade1();
+
+//        karma.badFisherman();
+        generateKarma.lowerKarma();
 
         player.baseDamage = player.baseDamage + 5;
         player.maxDamage = player.maxDamage + 8;
@@ -976,6 +1069,8 @@ public class Sequence {
     }
 
     public void lakeThree() {
+        hasWaterBlast = true;
+        ghostStillExists = false;
         String watchedOrHelped = "Ghost Fisherman: Hello adventurer.....you remember me dont you? That bandit ended up taking my life...AND YOU LET IT HAPPEN!\n" +
                 "<The ghost charges you!>";
 
@@ -1112,7 +1207,7 @@ public class Sequence {
         mana.choice3.setText(battleChoice3);
 
 
-        game.nextChoice1 = "Attack Druid";
+        game.nextChoice1 = "Attack Wizard";
         game.nextChoice2 = "Use Magic";
         game.nextChoice3 = "Use Item";
 
@@ -1182,33 +1277,59 @@ public class Sequence {
 
     public void wizardVictory(){
         mana.useItemButton.setVisible(false);
+        mana.choice2.setVisible(true);
 
         player.exp = player.exp + wizard.expWorth;
         mana.expLabel.setText("" + player.exp);
 
         mana.adventureText.setText("<The Dark Wizard falls to the ground and you  received " + wizard.expWorth + " experience points!" +
                 "\nDark Wizard: Heh, you really may be the Grand Masters chosen one. You are all still doomed and not ready for whats coming..\n" +
-                "<The Dark Wizard is severely weakened and ");
+                "<The Dark Wizard is severely weakened>");
+        mana.choice1.setText("Spare Wizard");
+        mana.choice2.setText("Kill Wizard");
+        mana.choice3.setVisible(false);
+
+        game.nextChoice1 = "Spare Wizard";
+        game.nextChoice2 = "Kill Wizard";
+    }
+
+    public void killWizard() {
+        player.exp = player.exp + wizard.expWorth;
+        mana.expLabel.setText("" + player.exp);
+
+        mana.adventureText.setText("<You launch a fireball into the Dark Wizards face, turning his whole body to ash>");
         mana.choice1.setText(">>>");
         mana.choice2.setVisible(false);
         mana.choice3.setVisible(false);
 
-        game.nextChoice1 = "Level Up";
-    }
-
-    public void killWizard() {
-
+        game.nextChoice1 = "End Game";
     }
 
     public void spareWizard() {
+        player.exp = player.exp + wizard.expWorth;
+        mana.expLabel.setText("" + player.exp);
 
+        mana.adventureText.setText("<You walk away from the Wizard, sparing his life and continue towards the stone building.>");
+        mana.choice1.setText(">>>");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
+
+        game.nextChoice1 = "End Game";
     }
+
+
     public void endGame() {
+        mana.adventureText.setText("THANK YOU FOR WATCHING ME PLAY THE DEMO VERSION OF THIS GAME!\n" +
+                "LETS SEE HOW MANY BAD DECISIONS I MADE.....");
+        mana.choice1.setText("Get Karma");
+        mana.choice2.setVisible(false);
+        mana.choice3.setVisible(false);
 
-
+        game.nextChoice1 = "Karma";
     }
 
     public void showKarma() {
+        generateKarma.configureTable();
         visiblityManager.endGame();
     }
 

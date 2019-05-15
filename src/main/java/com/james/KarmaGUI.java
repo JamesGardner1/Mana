@@ -9,6 +9,17 @@ public class KarmaGUI extends JFrame{
     private JPanel karmaPanel;
     private JLabel karmaResult;
 
+    int karmaPoints = 0;
+
+    public void raiseKarma(){
+        karmaPoints = karmaPoints + 1;
+    }
+
+    public void lowerKarma(){
+        karmaPoints = karmaPoints - 1;
+    }
+
+
     KarmaDB db;
 
     KarmaGUI(KarmaDB db) {
@@ -20,9 +31,11 @@ public class KarmaGUI extends JFrame{
         setTitle("Karma Database");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(false);
+        if (karmaPoints > 1) {karmaResult.setText("GOOD");}
+        else if (karmaPoints < -1) {karmaResult.setText("BAD");} else {karmaResult.setText("NEUTRAL");}
     }
 
-    private void configureTable() {
+    public void configureTable() {
         Vector columnNames = db.getColumnNames();
         Vector data = db.getKarma();
 
