@@ -8,7 +8,8 @@ public class Game {
     ChoiceHandler choiceHandler = new ChoiceHandler();
     Mana mana = new Mana(choiceHandler);
     TitleScreen titleScreen = new TitleScreen(choiceHandler);
-    VisiblityManager visiblityManager = new VisiblityManager(mana, titleScreen);
+    KarmaGUI karma;
+    VisiblityManager visiblityManager = new VisiblityManager(mana, titleScreen, karma);
     Sequence sequence = new Sequence(this, mana, titleScreen, visiblityManager);
 
     String nextChoice1, nextChoice2, nextChoice3, nextChoice4;
@@ -27,8 +28,6 @@ public class Game {
         mana.clearInventory();
         sequence.defaultStats();
         sequence.setUIDefault();
-
-
 
     }
 

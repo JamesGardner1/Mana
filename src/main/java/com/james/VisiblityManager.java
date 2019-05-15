@@ -4,11 +4,12 @@ public class VisiblityManager {
 
     Mana mana;
     TitleScreen titleScreen;
+    KarmaGUI karma;
 
-    public VisiblityManager(Mana manaScreen, TitleScreen tScreen){
+    public VisiblityManager(Mana manaScreen, TitleScreen tScreen, KarmaGUI kTable){
         mana = manaScreen;
         titleScreen = tScreen;
-
+        karma = kTable;
     }
 
     public void showTitleScreen(){
@@ -22,5 +23,9 @@ public class VisiblityManager {
         titleScreen.setVisible(false);
         mana.setVisible(true);
 
+    }
+    public void endGame() {
+        mana.setVisible(false);
+        karma.setVisible(true);
     }
 }

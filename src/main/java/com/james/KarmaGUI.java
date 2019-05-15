@@ -7,6 +7,7 @@ import java.util.Vector;
 public class KarmaGUI extends JFrame{
     private JTable karmaTable;
     private JPanel karmaPanel;
+    private JLabel karmaResult;
 
     KarmaDB db;
 
@@ -18,12 +19,10 @@ public class KarmaGUI extends JFrame{
         pack();
         setTitle("Karma Database");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        configureTable();
         setVisible(false);
     }
 
     private void configureTable() {
-
         Vector columnNames = db.getColumnNames();
         Vector data = db.getKarma();
 
