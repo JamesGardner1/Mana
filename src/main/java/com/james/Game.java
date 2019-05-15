@@ -38,7 +38,7 @@ public class Game {
         public void actionPerformed(ActionEvent e) {
 
             String yourChoice = e.getActionCommand();
-
+            // Runs commands throughout the game. This guides your choices.
             switch(yourChoice){
                 case "start": visiblityManager.startGame();sequence.awaken(); break;
                 case "c1": sequence.selectChoice(nextChoice1); break;
