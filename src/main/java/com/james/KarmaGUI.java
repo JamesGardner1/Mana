@@ -26,6 +26,8 @@ public class KarmaGUI extends JFrame{
 
         this.db = db;
 
+
+        configureTable();
         setContentPane(karmaPanel);
         pack();
         setTitle("Karma Database");

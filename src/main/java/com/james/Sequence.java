@@ -458,8 +458,8 @@ public class Sequence {
     public void water() {
         mana.useItemButton.setVisible(false);
         int magicDamage = rnd.nextInt(waterBlast.maxDamage - waterBlast.baseDamage + 1) + waterBlast.baseDamage;
-       if (player.exp > 40 && lakePath) {
-            mana.adventureText.setText("You hurl a waterblast at the " + ghost.name + " and dealt " + magicDamage + " damage!");
+       if (!finalBattle) {
+            mana.adventureText.setText("You hurl a waterblast at the ghost and dealt " + magicDamage + " damage!");
             ghost.hp = ghost.hp - magicDamage;
 
             player.mana = player.mana - waterBlast.manaCost;
@@ -1362,7 +1362,7 @@ public class Sequence {
     }
 
     public void spareWizard() {
-        karma.addKarma("Spared Wizard","Spared the WIzards life", "Good");
+        karma.addKarma("Spared Wizard","Spared the Wizards life", "Good");
         generateKarma.raiseKarma();
 
         player.exp = player.exp + wizard.expWorth;
@@ -1388,7 +1388,6 @@ public class Sequence {
     }
 
     public void showKarma() {
-        generateKarma.configureTable();
         visiblityManager.endGame();
     }
 
