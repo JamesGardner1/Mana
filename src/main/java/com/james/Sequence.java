@@ -1230,6 +1230,7 @@ public class Sequence {
     /// Boss Battle
 
     public void darkWizard() {
+        mana.choice4.setVisible(false);
         // Story choice
         String choice = "forest";
         if (lakePath) {
